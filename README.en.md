@@ -55,7 +55,7 @@ SlimSpark is a mobile-first single-page app that brings goal planning, daily foo
 - Per-meal quick presets for frequently logged foods.
 - 18 exercises covering cardio, core, glutes and legs, upper body, and stretching.
 - Expandable exercise cards with steps, breathing cues, common mistakes, and a shortcut to add the move to today's workout.
-- Goal-aware, locally generated exercise recommendations based on the current goal, weight stage, and recent records.
+- Goal-aware, locally generated exercise recommendations based on the current goal, BMI, exercise frequency, and recent check-in history.
 
 ### Progress review
 
@@ -141,4 +141,4 @@ No open-source license has been added yet. All rights are reserved by default; p
 
 - [Chart.js](https://www.chartjs.org/) for the progress charts
 - [GitHub Pages](https://pages.github.com/) for static hosting
-- All UI icons are inline SVGs in this project; exercise and dish data are maintained with the app
+- UI icons and exercise storyboards are inline SVGs; exercise and dish data are maintained with the app
