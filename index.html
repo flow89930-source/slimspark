@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F6F8">
+  <meta name="description" content="轻燃计划 SlimSpark —— 清爽轻量的减脂管理应用">
+  <title>轻燃计划 SlimSpark</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="js/data.js" defer></script>
+  <script src="js/motion.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="icon-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+    </symbol>
+    <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+      <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    </symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 2v4M16 2v4"/>
+      <rect width="18" height="18" x="3" y="4" rx="3"/>
+      <path d="M3 10h18M9 16l2 2 4-4"/>
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="m8.5 12.2 2.3 2.3 4.9-5"/>
+    </symbol>
+    <symbol id="icon-dumbbell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.5 6.5v11M3 9v6M17.5 6.5v11M21 9v6M6.5 12h11"/>
+    </symbol>
+    <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/>
+    </symbol>
+    <symbol id="icon-meal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12h16c0 4.4-3.6 8-8 8s-8-3.6-8-8Z"/>
+      <path d="M7 21h10"/>
+      <path d="M14 3 9 12M17 4l-4.5 8"/>
+    </symbol>
+    <symbol id="icon-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="17" rx="5"/>
+      <path d="M8 9.5a4 4 0 0 1 8 0"/>
+      <path d="m12 9.5 2-2"/>
+      <path d="M7 17h10"/>
+    </symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M12 5v14M5 12h14"/>
+    </symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m6 9 6 6 6-6"/>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="m20 20-4-4"/>
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M18 6 6 18M6 6l12 12"/>
+    </symbol>
+    <symbol id="icon-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z"/>
+      <path d="m14.5 5.5 3 3"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg class="icon"><use href="#icon-flame"></use></svg>
+      </span>
+      <span class="brand-copy">
+        <strong>轻燃计划</strong>
+        <span>SlimSpark</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="app-main" id="main-content">
+    <section class="page is-active home-page" id="page-home" data-page="home" aria-labelledby="page-home-title">
+      <div class="page-heading home-heading">
+        <p class="page-kicker" id="home-date">今天</p>
+        <h1 id="page-home-title"><span id="home-greeting">你好</span>，加油！</h1>
+      </div>
+
+      <a class="profile-guide" id="profile-guide" href="#page-plan" hidden>
+        <span class="guide-icon" aria-hidden="true">
+          <svg class="icon"><use href="#icon-calendar"></use></svg>
+        </span>
+        <span class="guide-copy">
+          <span class="guide-kicker">还没有个人资料</span>
+          <strong>先制定我的减肥计划</strong>
+          <span class="guide-description">设定起始体重与目标，让每次坚持都有方向。</span>
+        </span>
+        <span class="guide-arrow" aria-hidden="true">
+          <svg class="icon"><use href="#icon-arrow"></use></svg>
+        </span>
+      </a>
+
+      <div class="dashboard-grid">
+        <article class="dashboard-card progress-card" aria-labelledby="weight-progress-title">
+          <header class="card-heading">
+            <div>
+              <p class="card-eyebrow">目标跟踪</p>
+              <h2 id="weight-progress-title">体重进度</h2>
+            </div>
+            <span class="card-tag" id="weight-delta">未设置</span>
+          </header>
+
+          <div class="progress-layout">
+            <div class="ring-wrap">
+              <svg class="progress-ring" viewBox="0 0 144 144" aria-hidden="true">
+                <circle class="progress-ring-track" cx="72" cy="72" r="58"></circle>
+                <circle class="progress-ring-value" id="weight-ring-value" cx="72" cy="72" r="58" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
+              </svg>
+              <div class="ring-center">
+                <strong id="progress-percent">—</strong>
+                <span>目标进度</span>
+              </div>
+            </div>
+
+            <div class="weight-summary">
+              <dl class="weight-stats">
+                <div class="weight-stat">
+                  <dt>当前体重</dt>
+                  <dd><span id="current-weight">—</span><small>kg</small></dd>
+                </div>
+                <div class="weight-stat">
+                  <dt>目标体重</dt>
+                  <dd><span id="target-weight">—</span><small>kg</small></dd>
+                </div>
+              </dl>
+              <p class="weight-note" id="weight-note">完善个人资料后，这里会显示你的体重目标进度。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="dashboard-card streak-card" aria-labelledby="streak-title">
+          <div class="streak-header">
+            <span class="streak-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-flame"></use></svg>
+            </span>
+            <h2 id="streak-title">连续打卡</h2>
+          </div>
+          <p class="streak-value"><span id="streak-count">0</span><small>天</small></p>
+          <p class="streak-note" id="streak-note">今天打卡，开启你的连续记录。</p>
+        </article>
+
+        <article class="dashboard-card plan-card" aria-labelledby="today-plan-title">
+          <header class="card-heading">
+            <div>
+              <p class="card-eyebrow">今日安排</p>
+              <h2 id="today-plan-title">今日计划</h2>
+            </div>
+            <span class="card-tag" id="today-plan-count">3 项</span>
+          </header>
+
+          <ul class="exercise-list" id="today-plan-list">
+            <li class="exercise-item">
+              <span class="exercise-number" aria-hidden="true">01</span>
+              <span class="exercise-copy">
+                <strong>晨间拉伸</strong>
+                <span>热身 · 全身唤醒</span>
+              </span>
+              <span class="exercise-time">10 分钟</span>
+            </li>
+            <li class="exercise-item">
+              <span class="exercise-number" aria-hidden="true">02</span>
+              <span class="exercise-copy">
+                <strong>午间快走</strong>
+                <span>有氧 · 轻松燃脂</span>
+              </span>
+              <span class="exercise-time">30 分钟</span>
+            </li>
+            <li class="exercise-item">
+              <span class="exercise-number" aria-hidden="true">03</span>
+              <span class="exercise-copy">
+                <strong>晚间核心</strong>
+                <span>力量 · 核心塑形</span>
+              </span>
+              <span class="exercise-time">12 分钟</span>
+            </li>
+          </ul>
+        </article>
+
+        <button class="checkin-cta" id="quick-checkin" type="button">
+          <span class="checkin-cta-icon" aria-hidden="true">
+            <svg class="icon"><use href="#icon-check"></use></svg>
+          </span>
+          <span class="checkin-cta-copy">
+            <strong>今日打卡</strong>
+            <span>记录今天的饮食、运动与体重</span>
+          </span>
+          <span class="checkin-cta-arrow" aria-hidden="true">
+            <svg class="icon"><use href="#icon-arrow"></use></svg>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <section class="page plan-page" id="page-plan" data-page="plan" aria-labelledby="page-plan-title" hidden>
+      <div class="page-heading">
+        <p class="page-kicker">一步一步，向目标靠近</p>
+        <h1 id="page-plan-title">计划</h1>
+      </div>
+
+      <ol class="plan-steps" aria-label="计划进度">
+        <li class="plan-step is-active" data-plan-step="1" aria-current="step">
+          <span class="step-number">1</span>
+          <span>基本信息</span>
+        </li>
+        <li class="plan-step" data-plan-step="2">
+          <span class="step-number">2</span>
+          <span>专属方案</span>
+        </li>
+      </ol>
+
+      <section class="wizard-panel" id="plan-step-form">
+        <div class="wizard-card">
+          <header class="wizard-intro">
+            <p class="card-eyebrow">开始制定</p>
+            <h2 id="plan-form-title" tabindex="-1">先告诉我们你的目标</h2>
+            <p>所有数据仅保存在当前浏览器，不会上传到服务器。</p>
+          </header>
+
+          <form class="plan-form" id="plan-form">
+            <fieldset class="form-group">
+              <legend class="field-label">性别</legend>
+              <div class="option-grid option-grid-2">
+                <label class="option-pill">
+                  <input type="radio" name="gender" value="female" required>
+                  <span>女生</span>
+                </label>
+                <label class="option-pill">
+                  <input type="radio" name="gender" value="male" required>
+                  <span>男生</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="form-grid">
+              <label class="form-group">
+                <span class="field-label">年龄</span>
+                <span class="input-shell">
+                  <input type="number" name="age" min="12" max="100" step="1" inputmode="numeric" placeholder="例如 28" required>
+                  <span class="field-unit">岁</span>
+                </span>
+              </label>
+
+              <label class="form-group">
+                <span class="field-label">身高</span>
+                <span class="input-shell">
+                  <input type="number" name="height" min="100" max="250" step="0.1" inputmode="decimal" placeholder="例如 170" required>
+                  <span class="field-unit">cm</span>
+                </span>
+              </label>
+
+              <label class="form-group">
+                <span class="field-label">当前体重</span>
+                <span class="input-shell">
+                  <input type="number" name="currentWeight" min="25" max="300" step="0.1" inputmode="decimal" placeholder="例如 68.5" required>
+                  <span class="field-unit">kg</span>
+                </span>
+              </label>
+
+              <label class="form-group">
+                <span class="field-label">目标体重</span>
+                <span class="input-shell">
+                  <input type="number" name="targetWeight" min="25" max="300" step="0.1" inputmode="decimal" placeholder="例如 60" required>
+                  <span class="field-unit">kg</span>
+                </span>
+              </label>
+            </div>
+
+            <p class="plan-goal-hint" id="plan-goal-hint" role="status" aria-live="polite" hidden></p>
+
+            <label class="form-group">
+              <span class="field-label">每周可运动天数</span>
+              <span class="select-shell">
+                <select name="exerciseDays">
+                  <option value="1">1 天</option>
+                  <option value="2">2 天</option>
+                  <option value="3" selected>3 天</option>
+                  <option value="4">4 天</option>
+                  <option value="5">5 天</option>
+                  <option value="6">6 天</option>
+                  <option value="7">7 天</option>
+                </select>
+              </span>
+            </label>
+
+            <fieldset class="form-group">
+              <legend class="field-label">期望周期</legend>
+              <div class="option-grid option-grid-3">
+                <label class="option-pill">
+                  <input type="radio" name="durationWeeks" value="4" required>
+                  <span>4 周</span>
+                </label>
+                <label class="option-pill">
+                  <input type="radio" name="durationWeeks" value="8" checked required>
+                  <span>8 周</span>
+                </label>
+                <label class="option-pill">
+                  <input type="radio" name="durationWeeks" value="12" required>
+                  <span>12 周</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <p class="form-error" id="plan-form-error" role="alert" hidden></p>
+
+            <button class="primary-button plan-submit" type="submit">
+              <span>生成我的专属计划</span>
+              <svg class="icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section class="wizard-panel" id="plan-step-result" aria-labelledby="plan-results-title" hidden>
+        <header class="results-heading">
+          <div>
+            <p class="card-eyebrow">你的专属方案</p>
+            <h2 id="plan-results-title" tabindex="-1">你的减重计划</h2>
+            <p>从 <strong id="result-current-weight">—</strong> kg 到 <strong id="result-target-weight">—</strong> kg，目标<span id="result-goal-verb">减重</span> <strong id="result-total-loss">—</strong> kg。</p>
+          </div>
+          <button class="text-button" id="plan-edit" type="button">返回修改</button>
+        </header>
+
+        <div class="plan-warning" id="plan-warning" role="alert" hidden>
+          <span class="warning-mark" aria-hidden="true">!</span>
+          <div>
+            <strong id="plan-warning-title">目标过快，建议调整</strong>
+            <p id="plan-warning-message">当前计划平均每周需减重 <span id="warning-weekly-rate">—</span> kg，超过每周 1 kg 的健康建议。</p>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <article class="result-card bmi-card">
+            <div class="result-card-head">
+              <p class="metric-label">BMI</p>
+              <span class="result-badge" id="result-bmi-label">—</span>
+            </div>
+            <p class="metric-value"><strong id="result-bmi">—</strong><span>kg/m²</span></p>
+            <p class="metric-note">当前体重 ÷ 身高²</p>
+          </article>
+
+          <article class="result-card">
+            <p class="metric-label">基础代谢 BMR</p>
+            <p class="metric-value"><strong id="result-bmr">—</strong><span>kcal/天</span></p>
+            <p class="metric-note">身体静息状态下消耗的热量</p>
+          </article>
+
+          <article class="result-card">
+            <p class="metric-label">每日总消耗 TDEE</p>
+            <p class="metric-value"><strong id="result-tdee">—</strong><span>kcal/天</span></p>
+            <p class="metric-note">活动系数 <span id="result-activity-factor">—</span></p>
+          </article>
+        </div>
+
+        <article class="energy-card">
+          <header>
+            <p class="card-eyebrow">每日热量建议</p>
+            <h2 id="energy-plan-title">按节奏，吃得刚刚好</h2>
+          </header>
+          <div class="energy-stats">
+            <div class="energy-stat">
+              <span id="result-adjustment-label">建议热量缺口</span>
+              <p><strong id="result-deficit">—</strong><small>kcal/天</small></p>
+            </div>
+            <div class="energy-stat">
+              <span>每日摄入目标</span>
+              <p><strong id="result-calories">—</strong><small>kcal/天</small></p>
+            </div>
+          </div>
+          <p class="energy-note" id="energy-plan-note">按每周健康减重 0.5–1 kg 推算，将每日缺口控制在 300–500 kcal。</p>
+        </article>
+
+        <article class="gain-guide" id="plan-gain-guide" hidden>
+          <header class="card-heading">
+            <div>
+              <p class="card-eyebrow">增重配套</p>
+              <h2>吃得够，也练得对</h2>
+            </div>
+            <span class="card-tag">健康增重</span>
+          </header>
+
+          <div class="gain-guide-grid">
+            <section class="gain-guide-block">
+              <span class="gain-guide-index" aria-hidden="true">01</span>
+              <h3>把盈余吃进三餐</h3>
+              <p id="gain-guide-calories">每日在总消耗基础上增加约 300 kcal，分到 3 餐和 2 次加餐。</p>
+              <p class="gain-guide-protein" id="gain-guide-protein">蛋白质每天约 90–120 g，分散到每一餐。</p>
+              <ul class="gain-guide-list">
+                <li>主食、奶类和坚果不要省，优先天然食物。</li>
+                <li>训练后 1 小时内补充碳水 + 蛋白质。</li>
+                <li>每周固定时间称重，按趋势小幅调整食量。</li>
+              </ul>
+            </section>
+
+            <section class="gain-guide-block">
+              <span class="gain-guide-index" aria-hidden="true">02</span>
+              <h3>用力量训练把体重练成肌肉</h3>
+              <p id="gain-guide-training">每周安排力量训练，优先练大肌群。</p>
+              <ul class="gain-guide-list">
+                <li>深蹲、弓步蹲、臀桥：强化下肢力量。</li>
+                <li>跪姿俯卧撑、标准俯卧撑、凳上臂屈伸：上肢推力。</li>
+                <li>同一肌群每周练 2 次，动作质量优先，逐步加量。</li>
+                <li>保证 7–9 小时睡眠，给肌肉恢复时间。</li>
+              </ul>
+            </section>
+          </div>
+
+          <section class="gain-meal-sample" aria-labelledby="gain-meal-sample-title">
+            <div class="gain-meal-sample-head">
+              <h3 id="gain-meal-sample-title">一日增重餐示例</h3>
+              <span>可按口味替换同类食物</span>
+            </div>
+            <div class="gain-meal-grid">
+              <div><span>早餐</span><p>燕麦牛奶 + 鸡蛋 + 全麦吐司</p></div>
+              <div><span>上午加餐</span><p>酸奶 + 香蕉 + 一小把坚果</p></div>
+              <div><span>午餐</span><p>米饭 + 鸡胸/牛肉 + 两份蔬菜</p></div>
+              <div><span>训练后</span><p>牛奶 + 水果 + 少量坚果</p></div>
+              <div><span>晚餐</span><p>面/薯类 + 鱼虾/豆制品 + 蔬菜</p></div>
+            </div>
+          </section>
+        </article>
+
+        <article class="weekly-card">
+          <header class="card-heading">
+            <div>
+              <p class="card-eyebrow">执行节奏</p>
+              <h2>每周计划</h2>
+            </div>
+            <span class="card-tag" id="weekly-duration-tag">— 周</span>
+          </header>
+          <div class="table-wrap">
+            <table class="weekly-table">
+              <caption class="sr-only">每周目标体重和建议运动安排</caption>
+              <thead>
+                <tr>
+                  <th scope="col">周次</th>
+                  <th scope="col">目标体重</th>
+                  <th scope="col">运动安排</th>
+                </tr>
+              </thead>
+              <tbody id="weekly-plan-body"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <div class="plan-actions">
+          <button class="secondary-button" id="plan-edit-secondary" type="button">重新填写</button>
+          <button class="primary-button" id="plan-save" type="button">保存我的计划</button>
+        </div>
+        <p class="save-status" id="plan-save-status" role="status" hidden></p>
+      </section>
+    </section>
+
+    <section class="page checkin-page" id="page-checkin" data-page="checkin" aria-labelledby="page-checkin-title" hidden>
+      <div class="page-heading checkin-heading">
+        <p class="page-kicker" id="checkin-date">今天</p>
+        <h1 id="page-checkin-title">打卡</h1>
+      </div>
+
+      <p class="checkin-storage-note" id="checkin-storage-note" role="alert" hidden></p>
+
+      <article class="checkin-hero" id="checkin-hero" aria-labelledby="checkin-streak-line">
+        <div class="hero-top">
+          <div>
+            <p class="hero-eyebrow">今日坚持</p>
+            <h2 class="hero-streak-line" id="checkin-streak-line">已连续打卡 <strong id="checkin-streak-count">0</strong> <span>天</span></h2>
+          </div>
+          <span class="hero-flame" aria-hidden="true">
+            <svg class="icon"><use href="#icon-flame"></use></svg>
+          </span>
+        </div>
+
+        <div class="hero-progress">
+          <div class="hero-progress-head">
+            <span>今日进度</span>
+            <span id="daily-progress-label">0/3</span>
+          </div>
+          <div class="hero-track" aria-hidden="true">
+            <span id="daily-progress-bar"></span>
+          </div>
+          <ul class="hero-checks" aria-label="今日打卡完成情况">
+            <li class="hero-check" data-daily-module="meals">饮食</li>
+            <li class="hero-check" data-daily-module="exercise">运动</li>
+            <li class="hero-check" data-daily-module="weight">体重</li>
+          </ul>
+          <p class="hero-status" id="checkin-today-status">今日打卡还差 3 项</p>
+        </div>
+
+        <p class="hero-rule">三餐、运动和体重全部完成才算打卡成功；连续天数按自然日计算，断一天清零重计。</p>
+      </article>
+
+      <div class="checkin-modules">
+        <article class="checkin-card diet-card" aria-labelledby="diet-title">
+          <header class="checkin-card-head">
+            <span class="module-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-meal"></use></svg>
+            </span>
+            <div class="checkin-card-copy">
+              <p class="card-eyebrow">营养记录</p>
+              <h2 id="diet-title">饮食打卡</h2>
+            </div>
+            <span class="card-tag" id="diet-summary">0/3 餐</span>
+          </header>
+
+          <section class="dish-finder" aria-labelledby="dish-finder-title">
+            <div class="dish-finder-head">
+              <div>
+                <p class="dish-finder-kicker">热量速查</p>
+                <h3 id="dish-finder-title">今天想吃什么？</h3>
+              </div>
+              <span class="dish-finder-count" id="dish-database-count">— 道菜品</span>
+            </div>
+
+            <div class="dish-target-row">
+              <span class="dish-target-label" id="dish-target-label">填入</span>
+              <div class="dish-target-options" role="group" aria-labelledby="dish-target-label">
+                <button class="dish-target-button" type="button" data-dish-meal="breakfast" aria-pressed="true">早餐</button>
+                <button class="dish-target-button" type="button" data-dish-meal="lunch" aria-pressed="false">午餐</button>
+                <button class="dish-target-button" type="button" data-dish-meal="dinner" aria-pressed="false">晚餐</button>
+              </div>
+            </div>
+
+            <div class="dish-search-shell" role="search">
+              <svg class="dish-search-icon icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+              <label class="sr-only" for="dish-search-input">搜索菜品热量</label>
+              <input id="dish-search-input" type="search" maxlength="24" placeholder="搜索菜名，如：番茄炒蛋" autocomplete="off" spellcheck="false" aria-controls="dish-result-list" aria-describedby="dish-disclaimer">
+              <button class="dish-search-clear" id="dish-search-clear" type="button" aria-label="清空菜品搜索" hidden>
+                <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+              </button>
+            </div>
+            <p class="dish-search-status" id="dish-search-status" role="status" aria-live="polite">已选择早餐，点选菜品即可填入。</p>
+
+            <div class="dish-results-head">
+              <h4 id="dish-results-title">推荐菜品</h4>
+              <span id="dish-result-count">—</span>
+            </div>
+            <ul class="dish-result-list" id="dish-result-list" aria-labelledby="dish-results-title"></ul>
+            <p class="dish-empty" id="dish-empty" hidden>没有找到相关菜品，换个关键词试试，或直接在下方手动记录。</p>
+            <p class="dish-disclaimer" id="dish-disclaimer">热量按常见份量估算，实际数值会随食材和用油变化。</p>
+          </section>
+
+          <div class="meal-list">
+            <section class="meal-item" data-meal-item="breakfast" aria-labelledby="meal-breakfast-title">
+              <div class="meal-heading">
+                <span class="meal-badge" aria-hidden="true">早</span>
+                <div class="meal-name">
+                  <h3 id="meal-breakfast-title">早餐</h3>
+                  <span data-meal-state="breakfast">待记录</span>
+                </div>
+              </div>
+              <div class="meal-input-row">
+                <label class="meal-text-field">
+                  <span class="sr-only">早餐吃了什么</span>
+                  <input id="meal-breakfast-food" type="text" data-meal-field="breakfast" data-meal-part="food" maxlength="80" placeholder="吃了什么？" autocomplete="off">
+                </label>
+                <label class="meal-kcal-field">
+                  <span class="sr-only">早餐估算热量</span>
+                  <input id="meal-breakfast-calories" type="number" data-meal-field="breakfast" data-meal-part="calories" min="0" max="5000" step="1" inputmode="numeric" placeholder="热量">
+                  <span class="meal-kcal-unit">kcal</span>
+                </label>
+              </div>
+              <div class="meal-quick-row">
+                <div class="meal-presets" data-meal-preset-list="breakfast" aria-label="早餐自定义快捷项">
+                  <span class="meal-presets-label">快捷</span>
+                </div>
+                <button class="meal-preset-manage" type="button" data-preset-editor-target="breakfast" aria-haspopup="dialog" aria-controls="preset-dialog">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                  <span>设置</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="meal-item" data-meal-item="lunch" aria-labelledby="meal-lunch-title">
+              <div class="meal-heading">
+                <span class="meal-badge" aria-hidden="true">午</span>
+                <div class="meal-name">
+                  <h3 id="meal-lunch-title">午餐</h3>
+                  <span data-meal-state="lunch">待记录</span>
+                </div>
+              </div>
+              <div class="meal-input-row">
+                <label class="meal-text-field">
+                  <span class="sr-only">午餐吃了什么</span>
+                  <input id="meal-lunch-food" type="text" data-meal-field="lunch" data-meal-part="food" maxlength="80" placeholder="吃了什么？" autocomplete="off">
+                </label>
+                <label class="meal-kcal-field">
+                  <span class="sr-only">午餐估算热量</span>
+                  <input id="meal-lunch-calories" type="number" data-meal-field="lunch" data-meal-part="calories" min="0" max="5000" step="1" inputmode="numeric" placeholder="热量">
+                  <span class="meal-kcal-unit">kcal</span>
+                </label>
+              </div>
+              <div class="meal-quick-row">
+                <div class="meal-presets" data-meal-preset-list="lunch" aria-label="午餐自定义快捷项">
+                  <span class="meal-presets-label">快捷</span>
+                </div>
+                <button class="meal-preset-manage" type="button" data-preset-editor-target="lunch" aria-haspopup="dialog" aria-controls="preset-dialog">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                  <span>设置</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="meal-item" data-meal-item="dinner" aria-labelledby="meal-dinner-title">
+              <div class="meal-heading">
+                <span class="meal-badge" aria-hidden="true">晚</span>
+                <div class="meal-name">
+                  <h3 id="meal-dinner-title">晚餐</h3>
+                  <span data-meal-state="dinner">待记录</span>
+                </div>
+              </div>
+              <div class="meal-input-row">
+                <label class="meal-text-field">
+                  <span class="sr-only">晚餐吃了什么</span>
+                  <input id="meal-dinner-food" type="text" data-meal-field="dinner" data-meal-part="food" maxlength="80" placeholder="吃了什么？" autocomplete="off">
+                </label>
+                <label class="meal-kcal-field">
+                  <span class="sr-only">晚餐估算热量</span>
+                  <input id="meal-dinner-calories" type="number" data-meal-field="dinner" data-meal-part="calories" min="0" max="5000" step="1" inputmode="numeric" placeholder="热量">
+                  <span class="meal-kcal-unit">kcal</span>
+                </label>
+              </div>
+              <div class="meal-quick-row">
+                <div class="meal-presets" data-meal-preset-list="dinner" aria-label="晚餐自定义快捷项">
+                  <span class="meal-presets-label">快捷</span>
+                </div>
+                <button class="meal-preset-manage" type="button" data-preset-editor-target="dinner" aria-haspopup="dialog" aria-controls="preset-dialog">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                  <span>设置</span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </article>
+
+        <article class="checkin-card exercise-checkin-card" aria-labelledby="exercise-checkin-title">
+          <header class="checkin-card-head">
+            <span class="module-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-dumbbell"></use></svg>
+            </span>
+            <div class="checkin-card-copy">
+              <p class="card-eyebrow">今日训练</p>
+              <h2 id="exercise-checkin-title">运动打卡</h2>
+            </div>
+            <div class="exercise-card-tools">
+              <span class="card-tag" id="exercise-summary">0/3 完成</span>
+              <button class="exercise-plan-manage" id="exercise-plan-manage" type="button" aria-haspopup="dialog" aria-controls="exercise-dialog">
+                <svg class="icon" aria-hidden="true"><use href="#icon-pencil"></use></svg>
+                <span>编辑</span>
+              </button>
+            </div>
+          </header>
+
+          <ul class="checkin-exercise-list" id="checkin-exercise-list">
+            <li>
+              <label class="checkin-exercise">
+                <input type="checkbox" data-exercise-id="morning-stretch">
+                <span class="exercise-check" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-check"></use></svg>
+                </span>
+                <span class="check-exercise-copy">
+                  <strong>晨间拉伸</strong>
+                  <span>热身 · 全身唤醒</span>
+                </span>
+                <span class="exercise-duration">10 分钟</span>
+              </label>
+            </li>
+            <li>
+              <label class="checkin-exercise">
+                <input type="checkbox" data-exercise-id="lunch-walk">
+                <span class="exercise-check" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-check"></use></svg>
+                </span>
+                <span class="check-exercise-copy">
+                  <strong>午间快走</strong>
+                  <span>有氧 · 轻松燃脂</span>
+                </span>
+                <span class="exercise-duration">30 分钟</span>
+              </label>
+            </li>
+            <li>
+              <label class="checkin-exercise">
+                <input type="checkbox" data-exercise-id="evening-core">
+                <span class="exercise-check" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-check"></use></svg>
+                </span>
+                <span class="check-exercise-copy">
+                  <strong>晚间核心</strong>
+                  <span>力量 · 核心塑形</span>
+                </span>
+                <span class="exercise-duration">12 分钟</span>
+              </label>
+            </li>
+          </ul>
+
+          <section class="exercise-recommend" aria-labelledby="exercise-recommend-title">
+            <div class="exercise-recommend-head">
+              <div>
+                <p class="exercise-recommend-kicker">数据匹配</p>
+                <h3 id="exercise-recommend-title">今天适合练什么</h3>
+              </div>
+              <span class="exercise-recommend-badge">智能推荐</span>
+            </div>
+            <p class="exercise-recommend-basis" id="exercise-recommend-basis">正在根据你的计划与近期记录匹配动作。</p>
+            <ul class="exercise-recommend-list" id="exercise-recommend-list"></ul>
+            <p class="exercise-recommend-empty" id="exercise-recommend-empty" hidden>今日清单已包含全部推荐动作，可以按清单开始训练。</p>
+            <p class="exercise-feedback" id="exercise-feedback" role="status" aria-live="polite" hidden></p>
+          </section>
+
+          <div class="exercise-celebration" id="exercise-celebration" role="status" hidden>
+            <div class="celebration-pieces" aria-hidden="true">
+              <span style="--x: 5%; --delay: 0s; --duration: 2.7s; --size: 5px; --rotate: 20deg;"></span>
+              <span style="--x: 17%; --delay: 0.5s; --duration: 3.1s; --size: 4px; --rotate: -35deg;"></span>
+              <span style="--x: 31%; --delay: 0.2s; --duration: 2.4s; --size: 6px; --rotate: 60deg;"></span>
+              <span style="--x: 45%; --delay: 0.8s; --duration: 3.3s; --size: 4px; --rotate: 10deg;"></span>
+              <span style="--x: 59%; --delay: 0.35s; --duration: 2.8s; --size: 5px; --rotate: -55deg;"></span>
+              <span style="--x: 72%; --delay: 0.9s; --duration: 2.5s; --size: 4px; --rotate: 45deg;"></span>
+              <span style="--x: 84%; --delay: 0.15s; --duration: 3s; --size: 6px; --rotate: -15deg;"></span>
+              <span style="--x: 94%; --delay: 0.65s; --duration: 2.6s; --size: 4px; --rotate: 75deg;"></span>
+            </div>
+            <span class="celebration-star" aria-hidden="true">✦</span>
+            <span class="celebration-copy">
+              <strong>运动全部完成！</strong>
+              <span>今日训练计划已全部打卡。</span>
+            </span>
+          </div>
+        </article>
+
+        <article class="checkin-card weight-card" aria-labelledby="weight-checkin-title">
+          <header class="checkin-card-head">
+            <span class="module-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-scale"></use></svg>
+            </span>
+            <div class="checkin-card-copy">
+              <p class="card-eyebrow">身体记录</p>
+              <h2 id="weight-checkin-title">体重打卡</h2>
+            </div>
+            <span class="card-tag" id="weight-summary">待记录</span>
+          </header>
+
+          <form class="weight-form" id="weight-form" novalidate>
+            <label class="weight-input-shell">
+              <span class="sr-only">今日体重（kg）</span>
+              <input id="weight-input" name="weight" type="number" min="25" max="300" step="0.1" inputmode="decimal" placeholder="输入今日体重" required>
+              <span class="weight-unit">kg</span>
+            </label>
+            <button class="primary-button weight-submit" type="submit">记录今日体重</button>
+          </form>
+          <p class="weight-feedback" id="weight-feedback" role="status" hidden></p>
+
+          <div class="weight-history-header">
+            <h3>体重记录</h3>
+            <span class="card-tag" id="weight-count">0 条</span>
+          </div>
+          <ol class="weight-history" id="weight-history"></ol>
+          <p class="weight-history-empty" id="weight-history-empty">还没有体重记录，从今天开始吧。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="page exercise-page" id="page-exercise" data-page="exercise" aria-labelledby="page-exercise-title" hidden>
+      <div class="page-heading">
+        <p class="page-kicker">选一个动作，让今天动起来</p>
+        <h1 id="page-exercise-title">动作</h1>
+      </div>
+
+      <div class="exercise-library" id="exercise-library">
+        <div class="exercise-filter-shell">
+          <div class="exercise-filters" id="exercise-filters" role="group" aria-label="按训练部位筛选动作"></div>
+        </div>
+
+        <div class="exercise-library-meta">
+          <p class="exercise-result-count" id="exercise-result-count" role="status"></p>
+          <p class="exercise-plan-hint">加入后同步至首页与打卡</p>
+        </div>
+
+        <p class="exercise-library-status" id="exercise-library-status" role="status" hidden></p>
+
+        <div class="movement-grid" id="exercise-card-list"></div>
+        <p class="exercise-library-empty" id="exercise-empty" hidden>这个分类暂时没有动作，去其他分类看看吧。</p>
+      </div>
+    </section>
+
+    <section class="page" id="page-data" data-page="data" aria-labelledby="page-data-title" hidden>
+      <div class="page-heading">
+        <p class="page-kicker">看见变化，也看见进步</p>
+        <h1 id="page-data-title">数据</h1>
+      </div>
+
+      <div class="data-grid">
+        <article class="dashboard-card data-card data-card-wide" aria-labelledby="data-weight-title">
+          <header class="card-heading data-card-heading">
+            <div>
+              <p class="card-eyebrow">趋势</p>
+              <h2 id="data-weight-title">体重变化</h2>
+            </div>
+            <span class="card-tag" id="data-weight-tag">暂无记录</span>
+          </header>
+          <div class="chart-shell data-weight-shell" id="data-weight-shell" hidden>
+            <canvas id="data-weight-chart" role="img" aria-label="体重变化折线图"></canvas>
+          </div>
+          <div class="data-empty" id="data-weight-empty">
+            <span class="data-empty-mark" aria-hidden="true">
+              <svg class="icon"><use href="#icon-scale"></use></svg>
+            </span>
+            <p>开始打卡后这里会出现你的数据</p>
+          </div>
+        </article>
+
+        <article class="dashboard-card data-card" aria-labelledby="data-heatmap-title">
+          <header class="card-heading data-card-heading">
+            <div>
+              <p class="card-eyebrow">习惯</p>
+              <h2 id="data-heatmap-title">打卡热力图</h2>
+            </div>
+            <span class="card-tag" id="data-heatmap-tag">近 12 周</span>
+          </header>
+          <div class="heatmap-wrap" id="data-heatmap-wrap" hidden>
+            <div class="heatmap-body">
+              <div class="heatmap-weekdays" aria-hidden="true">
+                <span>一</span><span></span><span>三</span><span></span><span>五</span><span></span><span>日</span>
+              </div>
+              <div class="heatmap-grid" id="data-heatmap" role="img"></div>
+            </div>
+            <div class="heatmap-footer">
+              <span class="heatmap-range" id="data-heatmap-range"></span>
+              <span class="heatmap-legend" aria-hidden="true">
+                <span>少</span>
+                <i class="is-level-1"></i><i class="is-level-2"></i><i class="is-level-3"></i>
+                <span>多</span>
+              </span>
+            </div>
+          </div>
+          <div class="data-empty" id="data-heatmap-empty">
+            <span class="data-empty-mark" aria-hidden="true">
+              <svg class="icon"><use href="#icon-calendar"></use></svg>
+            </span>
+            <p>开始打卡后这里会出现你的数据</p>
+          </div>
+        </article>
+
+        <article class="dashboard-card data-card" aria-labelledby="data-calorie-title">
+          <header class="card-heading data-card-heading">
+            <div>
+              <p class="card-eyebrow">摄入</p>
+              <h2 id="data-calorie-title">最近 7 天热量</h2>
+            </div>
+            <span class="card-tag" id="data-calorie-tag">近 7 天</span>
+          </header>
+          <div class="chart-shell data-calorie-shell" id="data-calorie-shell" hidden>
+            <canvas id="data-calorie-chart" role="img" aria-label="最近 7 天摄入热量与目标热量对比柱状图"></canvas>
+          </div>
+          <div class="data-empty" id="data-calorie-empty">
+            <span class="data-empty-mark" aria-hidden="true">
+              <svg class="icon"><use href="#icon-meal"></use></svg>
+            </span>
+            <p>开始打卡后这里会出现你的数据</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="主要导航">
+    <div class="nav-inner">
+      <button class="nav-item is-active" type="button" data-page-target="home" aria-controls="page-home" aria-current="page">
+        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-home"></use></svg>
+        <span>首页</span>
+      </button>
+      <button class="nav-item" type="button" data-page-target="plan" aria-controls="page-plan">
+        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
+        <span>计划</span>
+      </button>
+      <button class="nav-item" type="button" data-page-target="checkin" aria-controls="page-checkin">
+        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-check"></use></svg>
+        <span>打卡</span>
+      </button>
+      <button class="nav-item" type="button" data-page-target="exercise" aria-controls="page-exercise">
+        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-dumbbell"></use></svg>
+        <span>动作</span>
+      </button>
+      <button class="nav-item" type="button" data-page-target="data" aria-controls="page-data">
+        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-chart"></use></svg>
+        <span>数据</span>
+      </button>
+    </div>
+  </nav>
+
+  <dialog class="preset-dialog" id="preset-dialog" aria-labelledby="preset-dialog-title" aria-describedby="preset-dialog-note">
+    <div class="preset-dialog-panel">
+      <header class="preset-dialog-head">
+        <div>
+          <p class="preset-dialog-kicker">自定义快捷</p>
+          <h2 id="preset-dialog-title">早餐快捷项</h2>
+        </div>
+        <button class="preset-dialog-close" id="preset-dialog-close" type="button" aria-label="关闭快捷项设置">
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+
+      <p class="preset-dialog-note" id="preset-dialog-note">把常吃菜品存为快捷项，记录时点一下就能填好名称和热量。</p>
+
+      <div class="preset-list-heading">
+        <h3>已保存</h3>
+        <span id="preset-count">0/8</span>
+      </div>
+      <ul class="preset-list" id="preset-list" aria-label="已保存的快捷项"></ul>
+      <p class="preset-list-empty" id="preset-list-empty" hidden>还没有快捷项，在下面添加第一道常吃菜品。</p>
+
+      <form class="preset-form" id="preset-form" novalidate>
+        <h3 id="preset-form-title">添加快捷项</h3>
+        <div class="preset-form-grid">
+          <label class="preset-field">
+            <span>菜品名称</span>
+            <input id="preset-food-input" name="preset-food" type="text" maxlength="20" placeholder="如：番茄炒蛋" autocomplete="off" required>
+          </label>
+          <label class="preset-field">
+            <span>每份热量</span>
+            <span class="preset-calorie-shell">
+              <input id="preset-calories-input" name="preset-calories" type="number" min="1" max="5000" step="1" inputmode="numeric" placeholder="200" required>
+              <small>kcal</small>
+            </span>
+          </label>
+        </div>
+        <p class="preset-feedback" id="preset-feedback" role="status" aria-live="polite" hidden></p>
+        <div class="preset-form-actions">
+          <button class="secondary-button preset-cancel" id="preset-cancel" type="button" hidden>取消编辑</button>
+          <button class="primary-button preset-save" id="preset-save" type="submit">添加快捷项</button>
+        </div>
+      </form>
+
+      <button class="secondary-button preset-done" id="preset-done" type="button">完成</button>
+    </div>
+  </dialog>
+
+  <dialog class="preset-dialog exercise-dialog" id="exercise-dialog" aria-labelledby="exercise-dialog-title" aria-describedby="exercise-dialog-note">
+    <div class="preset-dialog-panel">
+      <header class="preset-dialog-head">
+        <div>
+          <p class="preset-dialog-kicker">训练清单</p>
+          <h2 id="exercise-dialog-title">编辑今日训练</h2>
+        </div>
+        <button class="preset-dialog-close" id="exercise-dialog-close" type="button" aria-label="关闭训练编辑">
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+
+      <p class="preset-dialog-note" id="exercise-dialog-note">调整每日训练会同步到首页今日计划和之后每天的打卡；从动作库临时加入的项目只影响今天。</p>
+
+      <div class="preset-list-heading">
+        <h3>每日训练</h3>
+        <span id="exercise-routine-count">3 / 8</span>
+      </div>
+      <ul class="preset-list exercise-routine-list" id="exercise-routine-list" aria-label="每日训练清单"></ul>
+
+      <div class="preset-list-heading exercise-extra-heading" id="exercise-extra-heading" hidden>
+        <h3>今日额外</h3>
+        <span>来自动作库 · 仅今日</span>
+      </div>
+      <ul class="preset-list exercise-routine-list" id="exercise-extra-list" aria-label="今日额外训练" hidden></ul>
+
+      <form class="preset-form" id="exercise-form" novalidate>
+        <h3 id="exercise-form-title">添加训练</h3>
+        <div class="preset-form-grid exercise-form-grid">
+          <label class="preset-field exercise-field-name">
+            <span>训练名称</span>
+            <input id="exercise-name-input" name="exercise-name" type="text" maxlength="16" placeholder="如：晚饭后快走" autocomplete="off" required>
+          </label>
+          <label class="preset-field">
+            <span>训练类型</span>
+            <select id="exercise-type-input" name="exercise-type">
+              <option value="热身">热身</option>
+              <option value="有氧" selected>有氧</option>
+              <option value="力量">力量</option>
+              <option value="核心">核心</option>
+              <option value="拉伸">拉伸</option>
+              <option value="其他">其他</option>
+            </select>
+          </label>
+          <label class="preset-field">
+            <span>训练时长</span>
+            <span class="preset-calorie-shell">
+              <input id="exercise-minutes-input" name="exercise-minutes" type="number" min="1" max="180" step="1" inputmode="numeric" value="20" required>
+              <small>分钟</small>
+            </span>
+          </label>
+        </div>
+        <p class="preset-feedback" id="exercise-form-feedback" role="status" aria-live="polite" hidden></p>
+        <div class="preset-form-actions">
+          <button class="secondary-button preset-cancel" id="exercise-cancel" type="button" hidden>取消编辑</button>
+          <button class="primary-button preset-save" id="exercise-save" type="submit">添加训练</button>
+        </div>
+      </form>
+
+      <button class="secondary-button preset-done" id="exercise-done" type="button">完成</button>
+    </div>
+  </dialog>
+</body>
+</html>

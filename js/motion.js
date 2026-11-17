@@ -1,0 +1,473 @@
+(() => {
+  // 120 × 100 坐标系；backArm / backLeg 为远端肢体，可自行微调关键点。
+  const poses = {
+    stand: {
+      head: [60, 18],
+      neck: [60, 31],
+      hip: [60, 61],
+      backArm: [[56, 34], [49, 48], [46, 61]],
+      frontArm: [[64, 34], [71, 48], [74, 61]],
+      backLeg: [[57, 61], [54, 79], [52, 94]],
+      frontLeg: [[63, 61], [66, 79], [68, 94]],
+    },
+    "jack-open": {
+      head: [60, 15],
+      neck: [60, 28],
+      hip: [60, 56],
+      backArm: [[56, 31], [46, 17], [35, 7]],
+      frontArm: [[64, 31], [74, 17], [85, 7]],
+      backLeg: [[57, 56], [40, 72], [26, 85]],
+      frontLeg: [[63, 56], [80, 72], [94, 85]],
+    },
+    "high-knee-a": {
+      head: [63, 20],
+      neck: [60, 32],
+      hip: [54, 61],
+      backArm: [[58, 35], [47, 45], [54, 55]],
+      frontArm: [[63, 36], [74, 45], [67, 54]],
+      backLeg: [[55, 61], [50, 79], [48, 94]],
+      frontLeg: [[54, 61], [72, 54], [69, 73]],
+    },
+    "high-knee-b": {
+      head: [63, 20],
+      neck: [60, 32],
+      hip: [54, 61],
+      backArm: [[58, 35], [69, 44], [62, 54]],
+      frontArm: [[63, 36], [52, 45], [59, 55]],
+      backLeg: [[55, 61], [71, 54], [68, 73]],
+      frontLeg: [[54, 61], [50, 79], [48, 94]],
+    },
+    "rope-hop": {
+      head: [60, 18],
+      neck: [60, 31],
+      hip: [60, 60],
+      backArm: [[56, 34], [44, 44], [48, 54]],
+      frontArm: [[64, 34], [76, 44], [72, 54]],
+      backLeg: [[57, 60], [54, 78], [52, 93]],
+      frontLeg: [[63, 60], [66, 78], [68, 93]],
+    },
+    "burpee-plank": {
+      head: [99, 57],
+      neck: [91, 63],
+      hip: [57, 69],
+      backArm: [[88, 64], [89, 80], [91, 93]],
+      frontArm: [[90, 64], [91, 81], [93, 94]],
+      backLeg: [[57, 69], [40, 80], [22, 92]],
+      frontLeg: [[58, 70], [41, 82], [23, 93]],
+    },
+    "jump-extend": {
+      head: [60, 14],
+      neck: [60, 27],
+      hip: [60, 57],
+      backArm: [[56, 30], [46, 16], [41, 5]],
+      frontArm: [[64, 30], [74, 16], [79, 5]],
+      backLeg: [[57, 57], [55, 74], [54, 87]],
+      frontLeg: [[63, 57], [65, 74], [66, 87]],
+    },
+    "plank-knees": {
+      head: [92, 58],
+      neck: [82, 64],
+      hip: [55, 69],
+      backArm: [[84, 67], [84, 87], [97, 89]],
+      frontArm: [[87, 66], [87, 88], [100, 90]],
+      backLeg: [[55, 70], [37, 88], [19, 90]],
+      frontLeg: [[56, 69], [38, 88], [20, 89]],
+    },
+    "plank-hold": {
+      head: [93, 58],
+      neck: [82, 63],
+      hip: [50, 69],
+      backArm: [[83, 65], [83, 87], [97, 89]],
+      frontArm: [[86, 64], [86, 88], [100, 90]],
+      backLeg: [[50, 70], [34, 73], [20, 76], [16, 90]],
+      frontLeg: [[51, 69], [35, 72], [21, 75], [17, 89]],
+    },
+    "crunch-down": {
+      head: [22, 72],
+      neck: [31, 76],
+      hip: [70, 81],
+      backArm: [[31, 76], [39, 67], [27, 62]],
+      frontArm: [[33, 77], [41, 68], [28, 63]],
+      backLeg: [[70, 81], [86, 63], [103, 85]],
+      frontLeg: [[71, 82], [88, 61], [105, 83]],
+    },
+    "crunch-up": {
+      head: [34, 58],
+      neck: [41, 68],
+      hip: [70, 81],
+      backArm: [[41, 68], [47, 58], [34, 53]],
+      frontArm: [[42, 69], [49, 59], [36, 54]],
+      backLeg: [[70, 81], [86, 63], [103, 85]],
+      frontLeg: [[71, 82], [88, 61], [105, 83]],
+    },
+    "twist-left": {
+      head: [57, 38],
+      neck: [59, 51],
+      hip: [61, 71],
+      backArm: [[57, 53], [43, 57], [31, 55]],
+      frontArm: [[61, 54], [47, 60], [34, 62]],
+      backLeg: [[60, 71], [77, 65], [88, 89]],
+      frontLeg: [[62, 72], [80, 69], [92, 90]],
+    },
+    "twist-right": {
+      head: [64, 39],
+      neck: [62, 52],
+      hip: [61, 71],
+      backArm: [[60, 54], [75, 55], [88, 53]],
+      frontArm: [[63, 55], [79, 60], [94, 58]],
+      backLeg: [[60, 71], [77, 65], [88, 89]],
+      frontLeg: [[62, 72], [80, 69], [92, 90]],
+    },
+    "deadbug-start": {
+      head: [22, 75],
+      neck: [31, 79],
+      hip: [72, 80],
+      backArm: [[31, 79], [33, 64], [36, 49]],
+      frontArm: [[33, 80], [39, 63], [45, 49]],
+      backLeg: [[72, 80], [88, 59], [101, 66]],
+      frontLeg: [[73, 81], [90, 60], [104, 68]],
+    },
+    "deadbug-extend": {
+      head: [22, 75],
+      neck: [31, 79],
+      hip: [72, 81],
+      backArm: [[31, 79], [21, 80], [8, 81]],
+      frontArm: [[33, 80], [39, 63], [45, 49]],
+      backLeg: [[72, 81], [92, 82], [111, 83]],
+      frontLeg: [[73, 82], [90, 61], [104, 69]],
+    },
+    "stand-side": {
+      head: [60, 18],
+      neck: [60, 31],
+      hip: [60, 60],
+      backArm: [[58, 34], [55, 47], [53, 62]],
+      frontArm: [[62, 34], [66, 47], [68, 62]],
+      backLeg: [[58, 60], [56, 78], [55, 94]],
+      frontLeg: [[62, 60], [64, 78], [65, 94]],
+    },
+    "squat-side": {
+      head: [55, 30],
+      neck: [55, 43],
+      hip: [48, 68],
+      backArm: [[52, 46], [63, 47], [75, 48]],
+      frontArm: [[57, 47], [69, 49], [81, 50]],
+      backLeg: [[48, 68], [63, 65], [65, 92]],
+      frontLeg: [[49, 68], [66, 67], [68, 94]],
+    },
+    "lunge-side": {
+      head: [55, 23],
+      neck: [57, 36],
+      hip: [52, 64],
+      backArm: [[55, 39], [47, 48], [40, 56]],
+      frontArm: [[59, 39], [65, 49], [70, 57]],
+      backLeg: [[52, 64], [33, 77], [20, 89]],
+      frontLeg: [[52, 64], [75, 67], [79, 93]],
+    },
+    "bridge-down": {
+      head: [20, 78],
+      neck: [30, 82],
+      hip: [70, 84],
+      backArm: [[30, 82], [44, 84], [58, 85]],
+      frontArm: [[31, 83], [46, 86], [60, 86]],
+      backLeg: [[70, 84], [86, 62], [99, 86]],
+      frontLeg: [[71, 85], [88, 64], [101, 87]],
+    },
+    "bridge-up": {
+      head: [20, 78],
+      neck: [30, 82],
+      hip: [69, 62],
+      backArm: [[30, 82], [44, 84], [58, 85]],
+      frontArm: [[31, 83], [46, 86], [60, 86]],
+      backLeg: [[69, 62], [86, 58], [99, 86]],
+      frontLeg: [[70, 63], [88, 61], [101, 87]],
+    },
+    "side-lunge": {
+      head: [70, 30],
+      neck: [69, 42],
+      hip: [66, 65],
+      backArm: [[65, 45], [54, 55], [48, 64]],
+      frontArm: [[73, 45], [83, 55], [87, 64]],
+      backLeg: [[66, 65], [44, 77], [24, 93]],
+      frontLeg: [[67, 65], [85, 67], [92, 93]],
+    },
+    "kneepushup-high": {
+      head: [102, 55],
+      neck: [92, 62],
+      hip: [58, 67],
+      backArm: [[90, 63], [90, 77], [91, 89]],
+      frontArm: [[92, 63], [92, 78], [93, 90]],
+      backLeg: [[58, 67], [36, 88], [18, 82]],
+      frontLeg: [[59, 68], [38, 90], [20, 84]],
+    },
+    "kneepushup-low": {
+      head: [98, 65],
+      neck: [90, 70],
+      hip: [57, 73],
+      backArm: [[88, 70], [80, 81], [91, 90]],
+      frontArm: [[90, 70], [83, 83], [93, 91]],
+      backLeg: [[57, 73], [36, 88], [18, 82]],
+      frontLeg: [[58, 74], [38, 90], [20, 84]],
+    },
+    "pushup-high": {
+      head: [104, 53],
+      neck: [94, 60],
+      hip: [57, 67],
+      backArm: [[92, 61], [92, 76], [93, 90]],
+      frontArm: [[94, 61], [94, 77], [95, 91]],
+      backLeg: [[57, 67], [39, 77], [21, 88]],
+      frontLeg: [[58, 68], [40, 80], [23, 90]],
+    },
+    "pushup-low": {
+      head: [99, 64],
+      neck: [91, 68],
+      hip: [57, 72],
+      backArm: [[89, 69], [81, 81], [92, 90]],
+      frontArm: [[91, 69], [83, 83], [94, 91]],
+      backLeg: [[57, 72], [39, 80], [21, 89]],
+      frontLeg: [[58, 73], [40, 82], [23, 90]],
+    },
+    "benchdip-high": {
+      head: [82, 37],
+      neck: [77, 49],
+      hip: [68, 64],
+      backArm: [[75, 51], [63, 60], [51, 61]],
+      frontArm: [[77, 52], [66, 62], [53, 63]],
+      backLeg: [[68, 64], [86, 72], [103, 90]],
+      frontLeg: [[69, 65], [88, 75], [105, 92]],
+    },
+    "benchdip-low": {
+      head: [79, 46],
+      neck: [74, 56],
+      hip: [66, 74],
+      backArm: [[72, 57], [63, 73], [51, 62]],
+      frontArm: [[74, 58], [65, 75], [53, 63]],
+      backLeg: [[66, 74], [86, 78], [103, 92]],
+      frontLeg: [[67, 75], [88, 81], [105, 92]],
+    },
+    "cat-round": {
+      head: [99, 66],
+      neck: [88, 62],
+      hip: [48, 62],
+      back: [67, 50],
+      backArm: [[86, 63], [86, 77], [85, 90]],
+      frontArm: [[89, 63], [89, 78], [88, 90]],
+      backLeg: [[48, 62], [48, 85], [28, 89]],
+      frontLeg: [[49, 63], [49, 87], [29, 90]],
+    },
+    "cat-arch": {
+      head: [101, 53],
+      neck: [89, 60],
+      hip: [48, 62],
+      back: [67, 73],
+      backArm: [[86, 61], [86, 77], [85, 90]],
+      frontArm: [[89, 61], [89, 78], [88, 90]],
+      backLeg: [[48, 62], [48, 85], [28, 89]],
+      frontLeg: [[49, 63], [49, 87], [29, 90]],
+    },
+    "fold-side": {
+      head: [43, 78],
+      neck: [52, 65],
+      hip: [64, 54],
+      backArm: [[54, 66], [56, 79], [57, 92]],
+      frontArm: [[52, 65], [48, 79], [46, 92]],
+      backLeg: [[64, 54], [64, 74], [64, 93]],
+      frontLeg: [[65, 54], [66, 74], [66, 94]],
+    },
+    "child-kneel": {
+      head: [67, 43],
+      neck: [64, 56],
+      hip: [55, 71],
+      backArm: [[62, 57], [66, 72], [69, 87]],
+      frontArm: [[66, 57], [70, 73], [73, 89]],
+      backLeg: [[55, 71], [55, 87], [35, 89]],
+      frontLeg: [[56, 72], [56, 89], [36, 90]],
+    },
+    "child-fold": {
+      head: [35, 83],
+      neck: [48, 78],
+      hip: [69, 74],
+      backArm: [[48, 78], [36, 84], [24, 88]],
+      frontArm: [[49, 79], [37, 86], [25, 90]],
+      backLeg: [[69, 74], [69, 87], [47, 89]],
+      frontLeg: [[70, 75], [70, 89], [48, 90]],
+    },
+  };
+
+  const boards = {
+    "jumping-jack": {
+      ground: 94,
+      frames: [
+        { pose: "stand", label: "并腿站立" },
+        { pose: "jack-open", label: "开合起跳" },
+      ],
+    },
+    "high-knees": {
+      ground: 94,
+      frames: [
+        { pose: "high-knee-a", label: "左膝上提" },
+        { pose: "high-knee-b", label: "右膝上提" },
+      ],
+    },
+    "jump-rope": {
+      ground: 94,
+      frames: [
+        { pose: "rope-hop", label: "摇绳过顶", prop: "rope-top" },
+        { pose: "rope-hop", label: "轻跳过绳", prop: "rope-bottom" },
+      ],
+    },
+    burpee: {
+      ground: 94,
+      frames: [
+        { pose: "stand", label: "站立准备" },
+        { pose: "burpee-plank", label: "俯撑收腿" },
+        { pose: "jump-extend", label: "蹬地起跳" },
+      ],
+    },
+    plank: {
+      ground: 91,
+      frames: [
+        { pose: "plank-knees", label: "屈膝支撑" },
+        { pose: "plank-hold", label: "撑起保持" },
+      ],
+    },
+    crunch: {
+      ground: 86,
+      frames: [
+        { pose: "crunch-down", label: "仰卧准备" },
+        { pose: "crunch-up", label: "卷起肩背" },
+      ],
+    },
+    "russian-twist": {
+      ground: 90,
+      frames: [
+        { pose: "twist-left", label: "转向左侧" },
+        { pose: "twist-right", label: "转向右侧" },
+      ],
+    },
+    "dead-bug": {
+      ground: 85,
+      frames: [
+        { pose: "deadbug-start", label: "四肢抬起" },
+        { pose: "deadbug-extend", label: "对侧伸展" },
+      ],
+    },
+    squat: {
+      ground: 94,
+      frames: [
+        { pose: "stand-side", label: "站立准备" },
+        { pose: "squat-side", label: "屈膝下蹲" },
+      ],
+    },
+    lunge: {
+      ground: 94,
+      frames: [
+        { pose: "stand-side", label: "并腿站立" },
+        { pose: "lunge-side", label: "向前弓步" },
+      ],
+    },
+    "glute-bridge": {
+      ground: 87,
+      frames: [
+        { pose: "bridge-down", label: "屈膝仰卧" },
+        { pose: "bridge-up", label: "抬髋收紧" },
+      ],
+    },
+    "side-lunge": {
+      ground: 94,
+      frames: [
+        { pose: "stand", label: "并腿站立" },
+        { pose: "side-lunge", label: "侧向弓步" },
+      ],
+    },
+    "knee-pushup": {
+      ground: 90,
+      frames: [
+        { pose: "kneepushup-high", label: "跪姿撑地" },
+        { pose: "kneepushup-low", label: "屈肘下压" },
+      ],
+    },
+    pushup: {
+      ground: 91,
+      frames: [
+        { pose: "pushup-high", label: "撑地预备" },
+        { pose: "pushup-low", label: "屈肘下沉" },
+      ],
+    },
+    "bench-dip": {
+      ground: 92,
+      prop: "bench",
+      frames: [
+        { pose: "benchdip-high", label: "撑凳准备" },
+        { pose: "benchdip-low", label: "屈肘下沉" },
+      ],
+    },
+    "cat-cow": {
+      ground: 90,
+      frames: [
+        { pose: "cat-round", label: "拱背呼气" },
+        { pose: "cat-arch", label: "塌背抬头" },
+      ],
+    },
+    "standing-forward-fold": {
+      ground: 94,
+      frames: [
+        { pose: "stand-side", label: "站立准备" },
+        { pose: "fold-side", label: "俯身下探" },
+      ],
+    },
+    "child-pose": {
+      ground: 90,
+      frames: [
+        { pose: "child-kneel", label: "跪坐准备" },
+        { pose: "child-fold", label: "前趴放松" },
+      ],
+    },
+  };
+
+  const categoryFallbacks = {
+    cardio: {
+      ground: 94,
+      frames: [
+        { pose: "stand", label: "起始姿势" },
+        { pose: "jack-open", label: "发力完成" },
+      ],
+    },
+    core: {
+      ground: 86,
+      frames: [
+        { pose: "crunch-down", label: "起始姿势" },
+        { pose: "crunch-up", label: "发力完成" },
+      ],
+    },
+    lower: {
+      ground: 94,
+      frames: [
+        { pose: "stand-side", label: "起始姿势" },
+        { pose: "squat-side", label: "发力完成" },
+      ],
+    },
+    upper: {
+      ground: 91,
+      frames: [
+        { pose: "pushup-high", label: "起始姿势" },
+        { pose: "pushup-low", label: "发力完成" },
+      ],
+    },
+    stretch: {
+      ground: 94,
+      frames: [
+        { pose: "stand-side", label: "起始姿势" },
+        { pose: "fold-side", label: "拉伸完成" },
+      ],
+    },
+    other: {
+      ground: 94,
+      frames: [
+        { pose: "stand", label: "起始姿势" },
+        { pose: "jack-open", label: "动作完成" },
+      ],
+    },
+  };
+
+  window.SLIMSPARK_MOTION = { poses, boards, categoryFallbacks };
+})();
