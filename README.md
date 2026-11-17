@@ -13,6 +13,7 @@
 [![Chart.js](https://img.shields.io/badge/Chart.js-4.4.7-FF6384?style=flat-square&logo=chartdotjs&logoColor=white)](https://www.chartjs.org/)
 [![Local Data](https://img.shields.io/badge/Storage-localStorage-111827?style=flat-square)](https://github.com/flow89930-source/slimspark)
 [![Mobile First](https://img.shields.io/badge/Responsive-Mobile%20First-3D8FAA?style=flat-square)](https://github.com/flow89930-source/slimspark)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 </div>
 
@@ -90,6 +91,7 @@
 │   └── motion.js           # 滚动显现与庆祝动画
 ├── docs/
 │   └── screenshots/        # README 展示截图
+├── LICENSE                 # MIT 许可证
 ├── README.md               # 中文说明
 └── README.en.md            # English README
 ```
@@ -135,7 +137,7 @@ py -3 -m http.server 4173
 
 ## 许可证
 
-本仓库暂未添加开源许可证。默认保留所有权利；如需转载、分发或商用，请先联系作者。
+本项目基于 [MIT License](LICENSE) 开源。
 
 ## 致谢
 

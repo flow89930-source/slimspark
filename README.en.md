@@ -13,6 +13,7 @@ A pure frontend weight management and habit tracker. No account, no backend, and
 [![Chart.js](https://img.shields.io/badge/Chart.js-4.4.7-FF6384?style=flat-square&logo=chartdotjs&logoColor=white)](https://www.chartjs.org/)
 [![Local Data](https://img.shields.io/badge/Storage-localStorage-111827?style=flat-square)](https://github.com/flow89930-source/slimspark)
 [![Mobile First](https://img.shields.io/badge/Responsive-Mobile%20First-3D8FAA?style=flat-square)](https://github.com/flow89930-source/slimspark)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 </div>
 
@@ -90,6 +91,7 @@ There is no frontend framework, package manager, or bundler. Chart.js is loaded 
 │   └── motion.js           # Scroll reveals and celebration animation
 ├── docs/
 │   └── screenshots/        # README screenshots
+├── LICENSE                 # MIT License
 ├── README.md               # Chinese README
 └── README.en.md            # This file
 ```
@@ -135,7 +137,7 @@ Weight management should prioritize safety and sustainability. BMI, BMR, TDEE, c
 
 ## License
 
-No open-source license has been added yet. All rights are reserved by default; please contact the author before redistribution or commercial use.
+This project is released under the [MIT License](LICENSE).
 
 ## Acknowledgements
 
