@@ -4,10 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#F4F6F8">
-  <meta name="description" content="轻燃计划 SlimSpark —— 清爽轻量的减脂管理应用">
+  <meta name="description" content="轻燃计划 SlimSpark —— 本地优先的校园体重管理与健康打卡应用，支持减重/增重计划、课表训练、拍照记餐、围度记录、21 天宿舍挑战与徽章墙。">
+  <meta name="color-scheme" content="light">
   <title>轻燃计划 SlimSpark</title>
+  <link rel="canonical" href="https://flow89930-source.github.io/slimspark/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="轻燃计划 SlimSpark">
+  <meta property="og:description" content="本地优先的校园体重管理与健康打卡应用：计划、课表训练、拍照记餐、围度记录、21 天宿舍挑战与徽章墙。">
+  <meta property="og:url" content="https://flow89930-source.github.io/slimspark/">
+  <meta property="og:image" content="https://flow89930-source.github.io/slimspark/docs/screenshots/home.png">
+  <meta property="og:image:alt" content="轻燃计划 SlimSpark 首页：热量概览、体重进度与连续打卡">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" async data-chartjs></script>
   <script src="js/data.js" defer></script>
   <script src="js/motion.js" defer></script>
   <script src="js/app.js" defer></script>
@@ -67,6 +79,10 @@
       <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z"/>
       <path d="m14.5 5.5 3 3"/>
     </symbol>
+    <symbol id="icon-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/>
+      <circle cx="12" cy="13" r="4"/>
+    </symbol>
   </svg>
 
   <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -105,6 +121,60 @@
       </a>
 
       <div class="dashboard-grid">
+        <article class="dashboard-card today-overview" id="today-overview" aria-labelledby="today-overview-title">
+          <header class="card-heading">
+            <div>
+              <p class="card-eyebrow">今日速览</p>
+              <h2 id="today-overview-title">热量概览</h2>
+            </div>
+            <span class="card-tag" id="today-overview-target">目标未设定</span>
+          </header>
+
+          <div class="overview-grid" role="group" aria-label="今日热量速览">
+            <button class="overview-item" type="button" data-record-target="breakfast" aria-label="已摄入热量，打开饮食记录">
+              <span class="overview-icon" aria-hidden="true">
+                <svg class="icon"><use href="#icon-meal"></use></svg>
+              </span>
+              <span class="overview-label">已摄入</span>
+              <span class="overview-value"><span id="today-intake">0</span><small>kcal</small></span>
+            </button>
+            <button class="overview-item" type="button" data-record-target="exercise" aria-label="运动消耗热量，打开运动记录">
+              <span class="overview-icon" aria-hidden="true">
+                <svg class="icon"><use href="#icon-flame"></use></svg>
+              </span>
+              <span class="overview-label">运动消耗</span>
+              <span class="overview-value"><span id="today-burn">0</span><small>kcal</small></span>
+            </button>
+            <button class="overview-item" type="button" data-record-target="weight" aria-label="剩余可摄入热量，打开体重记录">
+              <span class="overview-icon" aria-hidden="true">
+                <svg class="icon"><use href="#icon-chart"></use></svg>
+              </span>
+              <span class="overview-label">剩余可摄入</span>
+              <span class="overview-value"><span id="today-remaining">—</span><small>kcal</small></span>
+            </button>
+          </div>
+          <p class="overview-note" id="today-overview-note">完善计划后可计算剩余可摄入热量。</p>
+        </article>
+
+        <article class="dashboard-card adjust-card" id="carryover-card" aria-labelledby="carryover-title" hidden>
+          <header class="card-heading">
+            <div>
+              <p class="card-eyebrow">轻量调整</p>
+              <h2 id="carryover-title">把昨天接上</h2>
+            </div>
+            <span class="card-tag" id="carryover-tag">10 分钟补练</span>
+          </header>
+          <p class="adjust-message" id="carryover-message">昨天没完成，今天给你安排了 10 分钟轻量补练。</p>
+          <ul class="adjust-task-list" id="carryover-list"></ul>
+          <p class="adjust-hint" id="carryover-hint">顺延会转成 10 分钟轻量补练；重排会保留原时长。</p>
+          <div class="adjust-actions" role="group" aria-label="选择安排方式">
+            <button class="adjust-button is-primary" type="button" data-carryover-action="carry">顺延到今天</button>
+            <button class="adjust-button" type="button" data-carryover-action="reschedule">本周内重排</button>
+            <button class="adjust-button is-quiet" type="button" data-carryover-action="skip">这次跳过</button>
+          </div>
+          <p class="adjust-feedback" id="carryover-feedback" role="status" hidden></p>
+        </article>
+
         <article class="dashboard-card progress-card" aria-labelledby="weight-progress-title">
           <header class="card-heading">
             <div>
@@ -153,55 +223,106 @@
           <p class="streak-note" id="streak-note">今天打卡，开启你的连续记录。</p>
         </article>
 
-        <article class="dashboard-card plan-card" aria-labelledby="today-plan-title">
+        <article class="dashboard-card plan-card" id="today-plan-card" aria-labelledby="today-plan-title">
           <header class="card-heading">
             <div>
               <p class="card-eyebrow">今日安排</p>
-              <h2 id="today-plan-title">今日计划</h2>
+              <h2 id="today-plan-title">今日任务</h2>
             </div>
-            <span class="card-tag" id="today-plan-count">3 项</span>
+            <span class="card-tag" id="today-plan-count">0/3</span>
           </header>
 
-          <ul class="exercise-list" id="today-plan-list">
-            <li class="exercise-item">
-              <span class="exercise-number" aria-hidden="true">01</span>
-              <span class="exercise-copy">
-                <strong>晨间拉伸</strong>
-                <span>热身 · 全身唤醒</span>
-              </span>
-              <span class="exercise-time">10 分钟</span>
-            </li>
-            <li class="exercise-item">
-              <span class="exercise-number" aria-hidden="true">02</span>
-              <span class="exercise-copy">
-                <strong>午间快走</strong>
-                <span>有氧 · 轻松燃脂</span>
-              </span>
-              <span class="exercise-time">30 分钟</span>
-            </li>
-            <li class="exercise-item">
-              <span class="exercise-number" aria-hidden="true">03</span>
-              <span class="exercise-copy">
-                <strong>晚间核心</strong>
-                <span>力量 · 核心塑形</span>
-              </span>
-              <span class="exercise-time">12 分钟</span>
-            </li>
-          </ul>
+          <ul class="checkin-exercise-list" id="today-plan-list"></ul>
+
+          <div class="today-plan-complete" id="today-plan-complete" role="status" aria-live="polite" hidden>
+            <span class="today-plan-complete-mark" aria-hidden="true">✦</span>
+            <span class="today-plan-complete-copy">
+              <strong>今日完成</strong>
+              <span>今天的训练任务已全部完成。</span>
+            </span>
+          </div>
+          <p class="today-plan-feedback" id="today-plan-feedback" role="status" hidden></p>
         </article>
+
+        <section class="dashboard-card campus-motion" id="campus-motion" aria-labelledby="campus-motion-title">
+          <header class="campus-motion-head">
+            <div>
+              <p class="card-eyebrow">轻量动一动</p>
+              <h2 id="campus-motion-title">校园微运动</h2>
+            </div>
+            <span class="card-tag" id="campus-motion-status" role="status">随时开始</span>
+          </header>
+
+          <div class="campus-motion-grid">
+            <button class="campus-motion-card" type="button" data-motion-workout="recess-5" aria-haspopup="dialog" aria-controls="motion-timer-dialog">
+              <span class="campus-motion-card-top">
+                <span class="campus-motion-icon" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-flame"></use></svg>
+                </span>
+                <span class="campus-motion-time">5 分钟</span>
+              </span>
+              <strong class="campus-motion-title">课间 5 分钟</strong>
+              <span class="campus-motion-desc">原地舒展 + 轻有氧，不占场地。</span>
+              <span class="campus-motion-action">
+                开始计时
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+              </span>
+            </button>
+
+            <button class="campus-motion-card" type="button" data-motion-workout="dorm-quiet" aria-haspopup="dialog" aria-controls="motion-timer-dialog">
+              <span class="campus-motion-card-top">
+                <span class="campus-motion-icon" aria-hidden="true">
+                  <svg class="icon"><use href="#icon-dumbbell"></use></svg>
+                </span>
+                <span class="campus-motion-time">6 分钟</span>
+              </span>
+              <strong class="campus-motion-title">宿舍静音燃脂</strong>
+              <span class="campus-motion-desc">无跳跃、低噪音，室友友好。</span>
+              <span class="campus-motion-action">
+                开始计时
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+              </span>
+            </button>
+          </div>
+          <p class="campus-motion-note">完成计时后会自动写入今天的运动记录。</p>
+        </section>
 
         <button class="checkin-cta" id="quick-checkin" type="button">
           <span class="checkin-cta-icon" aria-hidden="true">
             <svg class="icon"><use href="#icon-check"></use></svg>
           </span>
           <span class="checkin-cta-copy">
-            <strong>今日打卡</strong>
+            <strong>今日记录</strong>
             <span>记录今天的饮食、运动与体重</span>
           </span>
           <span class="checkin-cta-arrow" aria-hidden="true">
             <svg class="icon"><use href="#icon-arrow"></use></svg>
           </span>
         </button>
+
+        <div class="record-shortcuts" role="group" aria-label="快捷记录">
+          <button class="record-shortcut" type="button" data-record-target="breakfast" aria-label="记早餐，打开饮食记录">
+            <span class="record-shortcut-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-meal"></use></svg>
+            </span>
+            <strong>记早餐</strong>
+            <small>打开饮食记录</small>
+          </button>
+          <button class="record-shortcut" type="button" data-record-target="exercise" aria-label="记运动，打开运动记录">
+            <span class="record-shortcut-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-dumbbell"></use></svg>
+            </span>
+            <strong>记运动</strong>
+            <small>打开运动记录</small>
+          </button>
+          <button class="record-shortcut" type="button" data-record-target="weight" aria-label="记体重，打开体重记录">
+            <span class="record-shortcut-icon" aria-hidden="true">
+              <svg class="icon"><use href="#icon-scale"></use></svg>
+            </span>
+            <strong>记体重</strong>
+            <small>打开体重记录</small>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -218,6 +339,10 @@
         </li>
         <li class="plan-step" data-plan-step="2">
           <span class="step-number">2</span>
+          <span>课表</span>
+        </li>
+        <li class="plan-step" data-plan-step="3">
+          <span class="step-number">3</span>
           <span>专属方案</span>
         </li>
       </ol>
@@ -317,10 +442,34 @@
             <p class="form-error" id="plan-form-error" role="alert" hidden></p>
 
             <button class="primary-button plan-submit" type="submit">
-              <span>生成我的专属计划</span>
+              <span>下一步：安排课表</span>
               <svg class="icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
             </button>
           </form>
+        </div>
+      </section>
+
+      <section class="wizard-panel" id="plan-step-schedule" aria-labelledby="plan-schedule-title" hidden>
+        <div class="wizard-card schedule-card">
+          <header class="wizard-intro">
+            <p class="card-eyebrow">第 2 步 · 课表</p>
+            <h2 id="plan-schedule-title" tabindex="-1">把一周的课表填进来</h2>
+            <p>标记每天有课还是空闲，再选择真正可用的时长。智能定制会据此安排训练、微运动和休息日。</p>
+          </header>
+
+          <div class="schedule-grid" id="schedule-grid" role="group" aria-label="一周课表设置"></div>
+
+          <p class="schedule-feedback" id="schedule-feedback" role="status" aria-live="polite">
+            修改会自动保存在当前浏览器。
+          </p>
+
+          <div class="schedule-actions">
+            <button class="secondary-button" id="schedule-back" type="button">上一步</button>
+            <button class="primary-button schedule-smart" id="schedule-smart" type="button">
+              <span>智能定制我的周计划</span>
+              <svg class="icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -381,6 +530,22 @@
             </div>
           </div>
           <p class="energy-note" id="energy-plan-note">按每周健康减重 0.5–1 kg 推算，将每日缺口控制在 300–500 kcal。</p>
+        </article>
+
+        <article class="weekly-card smart-week-card" aria-labelledby="smart-week-title">
+          <header class="card-heading">
+            <div>
+              <p class="card-eyebrow">智能定制 · 一周安排</p>
+              <h2 id="smart-week-title">这周怎么练，已经排好了</h2>
+            </div>
+            <div class="smart-week-head-actions">
+              <span class="card-tag" id="smart-week-tag">—</span>
+              <button class="text-button smart-week-edit" id="smart-week-schedule-edit" type="button">调整课表</button>
+            </div>
+          </header>
+          <p class="smart-week-summary" id="smart-week-summary">正在生成一周安排…</p>
+          <div class="smart-week-grid" id="smart-week-grid"></div>
+          <p class="smart-week-footnote" id="smart-week-diet-note">每日饮食目标沿用上方 TDEE 计算结果。</p>
         </article>
 
         <article class="gain-guide" id="plan-gain-guide" hidden>
@@ -465,9 +630,16 @@
     </section>
 
     <section class="page checkin-page" id="page-checkin" data-page="checkin" aria-labelledby="page-checkin-title" hidden>
+      <div class="record-toolbar">
+        <button class="record-back" id="record-back" type="button" aria-label="返回上一页">
+          <svg class="icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+          <span>返回</span>
+        </button>
+      </div>
+
       <div class="page-heading checkin-heading">
         <p class="page-kicker" id="checkin-date">今天</p>
-        <h1 id="page-checkin-title">打卡</h1>
+        <h1 id="page-checkin-title">记录中心</h1>
       </div>
 
       <p class="checkin-storage-note" id="checkin-storage-note" role="alert" hidden></p>
@@ -523,6 +695,17 @@
               </div>
               <span class="dish-finder-count" id="dish-database-count">— 道菜品</span>
             </div>
+
+            <button class="photo-meal-entry" id="photo-meal-open" type="button" aria-haspopup="dialog" aria-controls="photo-meal-dialog">
+              <span class="photo-meal-entry-icon" aria-hidden="true">
+                <svg class="icon"><use href="#icon-camera"></use></svg>
+              </span>
+              <span class="photo-meal-entry-copy">
+                <strong>拍照记餐</strong>
+                <span>拍下餐盘，选菜品和份量，热量自动填好</span>
+              </span>
+              <span class="photo-meal-entry-action">去拍照</span>
+            </button>
 
             <div class="dish-target-row">
               <span class="dish-target-label" id="dish-target-label">填入</span>
@@ -581,6 +764,7 @@
                   <span>设置</span>
                 </button>
               </div>
+              <div class="meal-photo-slot" data-meal-photo="breakfast" hidden></div>
             </section>
 
             <section class="meal-item" data-meal-item="lunch" aria-labelledby="meal-lunch-title">
@@ -611,6 +795,7 @@
                   <span>设置</span>
                 </button>
               </div>
+              <div class="meal-photo-slot" data-meal-photo="lunch" hidden></div>
             </section>
 
             <section class="meal-item" data-meal-item="dinner" aria-labelledby="meal-dinner-title">
@@ -641,6 +826,7 @@
                   <span>设置</span>
                 </button>
               </div>
+              <div class="meal-photo-slot" data-meal-photo="dinner" hidden></div>
             </section>
           </div>
         </article>
@@ -776,9 +962,14 @@
         <h1 id="page-exercise-title">动作</h1>
       </div>
 
+      <div class="exercise-view-switch" role="group" aria-label="动作页内容切换">
+        <button class="exercise-view-button is-active" type="button" data-exercise-view="dorm" aria-pressed="true" aria-controls="exercise-library">宿舍动作</button>
+        <button class="exercise-view-button" type="button" data-exercise-view="canteen" aria-pressed="false" aria-controls="canteen-panel">食堂红黑榜</button>
+      </div>
+
       <div class="exercise-library" id="exercise-library">
         <div class="exercise-filter-shell">
-          <div class="exercise-filters" id="exercise-filters" role="group" aria-label="按训练部位筛选动作"></div>
+          <div class="exercise-filters" id="exercise-filters" role="group" aria-label="按训练部位和校园场景筛选动作"></div>
         </div>
 
         <div class="exercise-library-meta">
@@ -789,7 +980,40 @@
         <p class="exercise-library-status" id="exercise-library-status" role="status" hidden></p>
 
         <div class="movement-grid" id="exercise-card-list"></div>
-        <p class="exercise-library-empty" id="exercise-empty" hidden>这个分类暂时没有动作，去其他分类看看吧。</p>
+        <p class="exercise-library-empty" id="exercise-empty" hidden>这个筛选下还没有动作，试试全部</p>
+      </div>
+
+      <div class="canteen-panel" id="canteen-panel" role="region" aria-labelledby="canteen-title" hidden>
+        <section class="canteen-intro" aria-labelledby="canteen-title">
+          <header class="canteen-head">
+            <div>
+              <p class="canteen-kicker">食堂选择参考</p>
+              <h2 id="canteen-title">这顿怎么点更稳</h2>
+            </div>
+            <span class="canteen-count" id="canteen-count">30 道</span>
+          </header>
+
+          <div class="canteen-search" role="search">
+            <svg class="icon canteen-search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+            <label class="sr-only" for="canteen-search-input">搜索菜名或别名</label>
+            <input id="canteen-search-input" type="search" maxlength="32" placeholder="搜菜名或别名，如：红烧肉 / 麻辣香锅" autocomplete="off" spellcheck="false" aria-controls="canteen-list" aria-describedby="canteen-search-status canteen-note">
+            <button class="canteen-search-clear" id="canteen-search-clear" type="button" aria-label="清空菜品搜索" hidden>
+              <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+
+          <p class="canteen-status" id="canteen-search-status" role="status" aria-live="polite">共 30 道校园菜，点“记入午餐/晚餐”可直接填入当天餐次。</p>
+
+          <div class="canteen-legend" aria-label="榜单等级说明">
+            <span class="canteen-legend-item is-red"><strong>红榜</strong>高蛋白 / 高纤维 / 低油</span>
+            <span class="canteen-legend-item is-yellow"><strong>黄榜</strong>可以吃，注意份量</span>
+            <span class="canteen-legend-item is-black"><strong>黑榜</strong>高油 / 高糖 / 高盐</span>
+          </div>
+        </section>
+
+        <div class="canteen-grid" id="canteen-list"></div>
+        <p class="canteen-empty" id="canteen-empty" hidden>没找到，试试搜“红烧肉”或“麻辣香锅”</p>
+        <p class="canteen-note" id="canteen-note">热量按常见一份估算；榜单只作日常点餐参考，实际数值会随食材和用油变化。</p>
       </div>
     </section>
 
@@ -797,6 +1021,12 @@
       <div class="page-heading">
         <p class="page-kicker">看见变化，也看见进步</p>
         <h1 id="page-data-title">数据</h1>
+      </div>
+
+      <div class="data-adjust-strip" id="data-adjust-strip" role="status" aria-live="polite" hidden>
+        <span class="data-adjust-kicker">本周安排</span>
+        <strong id="data-adjust-count">本周跳过 0 次</strong>
+        <span class="data-adjust-note" id="data-adjust-note">跳过只调整安排，不影响连续打卡。</span>
       </div>
 
       <div class="data-grid">
@@ -815,7 +1045,8 @@
             <span class="data-empty-mark" aria-hidden="true">
               <svg class="icon"><use href="#icon-scale"></use></svg>
             </span>
-            <p>开始打卡后这里会出现你的数据</p>
+            <p>还没有体重记录。记录一次体重，这里就会开始画出变化曲线。</p>
+            <button class="data-empty-action" type="button" data-data-action="record-weight">去记录体重</button>
           </div>
         </article>
 
@@ -847,7 +1078,8 @@
             <span class="data-empty-mark" aria-hidden="true">
               <svg class="icon"><use href="#icon-calendar"></use></svg>
             </span>
-            <p>开始打卡后这里会出现你的数据</p>
+            <p>还没有打卡记录。完成今天的饮食、运动或体重记录，热力图就会亮起。</p>
+            <button class="data-empty-action" type="button" data-data-action="open-checkin">去完成今日打卡</button>
           </div>
         </article>
 
@@ -866,12 +1098,231 @@
             <span class="data-empty-mark" aria-hidden="true">
               <svg class="icon"><use href="#icon-meal"></use></svg>
             </span>
-            <p>开始打卡后这里会出现你的数据</p>
+            <p>最近 7 天还没有饮食热量。记录一餐后，这里会自动统计每日摄入。</p>
+            <button class="data-empty-action" type="button" data-data-action="record-breakfast">去记录饮食</button>
+          </div>
+        </article>
+
+        <article class="dashboard-card data-card data-card-wide" aria-labelledby="data-body-title">
+          <header class="card-heading data-card-heading">
+            <div>
+              <p class="card-eyebrow">围度</p>
+              <h2 id="data-body-title">身体维度记录</h2>
+            </div>
+            <span class="card-tag" id="data-body-tag">暂无记录</span>
+          </header>
+
+          <form class="body-metrics-form" id="body-metrics-form" novalidate aria-describedby="body-metrics-help">
+            <div class="body-metrics-fields">
+              <div class="body-metrics-field body-metrics-date-field">
+                <label class="field-label" for="body-metrics-date">记录日期</label>
+                <span class="input-shell">
+                  <input id="body-metrics-date" name="bodyDate" type="date" required>
+                </span>
+              </div>
+              <div class="body-metrics-field">
+                <label class="field-label" for="body-metrics-waist">腰围</label>
+                <span class="input-shell">
+                  <input id="body-metrics-waist" name="waist" type="number" inputmode="decimal" min="30" max="200" step="0.1" placeholder="例如 72.5">
+                  <span class="field-unit">cm</span>
+                </span>
+              </div>
+              <div class="body-metrics-field">
+                <label class="field-label" for="body-metrics-hip">臀围</label>
+                <span class="input-shell">
+                  <input id="body-metrics-hip" name="hip" type="number" inputmode="decimal" min="30" max="200" step="0.1" placeholder="例如 94.0">
+                  <span class="field-unit">cm</span>
+                </span>
+              </div>
+              <div class="body-metrics-field">
+                <label class="field-label" for="body-metrics-thigh">大腿围</label>
+                <span class="input-shell">
+                  <input id="body-metrics-thigh" name="thigh" type="number" inputmode="decimal" min="30" max="200" step="0.1" placeholder="例如 54.5">
+                  <span class="field-unit">cm</span>
+                </span>
+              </div>
+            </div>
+            <div class="body-metrics-actions">
+              <button class="primary-button body-metrics-submit" type="submit">保存围度</button>
+              <p class="body-metrics-help" id="body-metrics-help">单位 cm，至少填写一项；同一天再次保存会更新当天记录。</p>
+            </div>
+            <p class="data-feedback" id="body-metrics-feedback" role="status" aria-live="polite" hidden></p>
+          </form>
+
+          <div class="chart-shell data-body-shell" id="data-body-shell" hidden>
+            <canvas id="data-body-chart" role="img" aria-label="腰围、臀围和大腿围变化折线图"></canvas>
+          </div>
+          <div class="data-empty" id="data-body-empty">
+            <span class="data-empty-mark" aria-hidden="true">
+              <svg class="icon"><use href="#icon-scale"></use></svg>
+            </span>
+            <p>还没有围度记录。填写上方表单并保存第一条，折线图就会开始记录。</p>
+            <button class="data-empty-action" type="button" data-data-action="focus-body-metrics">去填写围度</button>
+          </div>
+        </article>
+
+        <article class="dashboard-card data-card data-card-wide dorm-challenge-card" aria-labelledby="data-challenge-title">
+          <header class="card-heading data-card-heading">
+            <div>
+              <p class="card-eyebrow">一起坚持</p>
+              <h2 id="data-challenge-title">21 天宿舍挑战</h2>
+            </div>
+            <span class="card-tag" id="dorm-challenge-tag">未创建</span>
+          </header>
+
+          <p class="dorm-challenge-note">
+            <svg class="icon" aria-hidden="true"><use href="#icon-check"></use></svg>
+            <span>离线挑战，数据仅保存在本机。无需登录，也不会自动上传。</span>
+          </p>
+
+          <div class="dorm-challenge-setup" id="dorm-challenge-setup">
+            <h3>创建挑战</h3>
+            <p class="dorm-challenge-setup-copy">填好信息就能开始。本机打卡后会自动累计坚持天数和运动分钟。</p>
+            <form class="dorm-challenge-form" id="dorm-challenge-form" novalidate>
+              <div class="dorm-challenge-form-grid">
+                <div class="dorm-challenge-field dorm-challenge-field-wide">
+                  <label class="field-label" for="dorm-challenge-name">挑战名</label>
+                  <span class="input-shell">
+                    <input id="dorm-challenge-name" name="challengeName" type="text" maxlength="20" autocomplete="off" placeholder="例如：宿舍 21 天轻燃打卡" required>
+                  </span>
+                </div>
+                <div class="dorm-challenge-field">
+                  <label class="field-label" for="dorm-challenge-start">开始日期</label>
+                  <span class="input-shell">
+                    <input id="dorm-challenge-start" name="challengeStart" type="date" required>
+                  </span>
+                </div>
+                <div class="dorm-challenge-field">
+                  <label class="field-label" for="dorm-challenge-self">我的昵称</label>
+                  <span class="input-shell">
+                    <input id="dorm-challenge-self" name="challengeSelf" type="text" maxlength="12" autocomplete="off" value="我" placeholder="用于战报署名">
+                  </span>
+                </div>
+                <div class="dorm-challenge-field dorm-challenge-field-wide">
+                  <label class="field-label" for="dorm-challenge-roommates">室友昵称（最多 4 人）</label>
+                  <span class="input-shell">
+                    <input id="dorm-challenge-roommates" name="challengeRoommates" type="text" maxlength="60" autocomplete="off" placeholder="用逗号分隔，例如：小夏，阿悦">
+                  </span>
+                </div>
+              </div>
+              <p class="dorm-challenge-form-help">室友昵称不会上传；战报码只包含昵称、坚持天数、运动分钟和最近打卡时间。</p>
+              <button class="primary-button dorm-challenge-submit" type="submit">创建 21 天挑战</button>
+              <p class="data-feedback" id="dorm-challenge-form-feedback" role="status" aria-live="polite" hidden></p>
+            </form>
+          </div>
+
+          <div class="dorm-challenge-play" id="dorm-challenge-play" hidden>
+            <div class="dorm-challenge-summary">
+              <div class="dorm-challenge-summary-main">
+                <p class="card-eyebrow">本机战况</p>
+                <h3 id="dorm-challenge-name-label">挑战</h3>
+                <p class="dorm-challenge-meta" id="dorm-challenge-meta"></p>
+              </div>
+              <span class="dorm-challenge-day" id="dorm-challenge-day">第 1 / 21 天</span>
+            </div>
+
+            <div class="dorm-challenge-stats" aria-label="本机挑战数据">
+              <div class="dorm-challenge-stat">
+                <span>坚持天数</span>
+                <strong id="dorm-challenge-days">0</strong><small>天</small>
+              </div>
+              <div class="dorm-challenge-stat">
+                <span>运动分钟</span>
+                <strong id="dorm-challenge-minutes">0</strong><small>分钟</small>
+              </div>
+              <div class="dorm-challenge-stat">
+                <span>最近打卡</span>
+                <strong id="dorm-challenge-last">暂无</strong>
+              </div>
+            </div>
+
+            <div class="dorm-challenge-progress-track" id="dorm-challenge-progressbar" role="progressbar" aria-label="本机坚持进度" aria-valuemin="0" aria-valuemax="21" aria-valuenow="0">
+              <span id="dorm-challenge-progress"></span>
+            </div>
+            <p class="dorm-challenge-progress-note">本机打卡后自动累计，榜单按坚持天数、运动分钟、最近打卡时间排序。</p>
+
+            <section class="dorm-challenge-block" aria-labelledby="dorm-challenge-report-title">
+              <div class="dorm-challenge-block-head">
+                <div>
+                  <p class="card-eyebrow">分享</p>
+                  <h3 id="dorm-challenge-report-title">我的战报码</h3>
+                </div>
+                <button class="data-action-button is-primary" id="dorm-challenge-report-button" type="button" data-data-action="generate-dorm-report">生成本机战报码</button>
+              </div>
+              <p class="dorm-challenge-block-copy">生成后复制给室友；室友在他们的页面导入，就能把你的成绩加入他们的排行榜。</p>
+              <div class="dorm-challenge-report-panel" id="dorm-challenge-report-panel" hidden>
+                <label class="sr-only" for="dorm-challenge-report-code">本机战报码</label>
+                <textarea class="dorm-challenge-code" id="dorm-challenge-report-code" rows="4" readonly placeholder="点击上方按钮生成本机战报码"></textarea>
+                <div class="dorm-challenge-actions">
+                  <button class="data-action-button" id="dorm-challenge-copy-button" type="button" data-data-action="copy-dorm-report">复制战报码</button>
+                </div>
+              </div>
+              <p class="data-feedback" id="dorm-challenge-report-feedback" role="status" aria-live="polite" hidden></p>
+            </section>
+
+            <section class="dorm-challenge-block" aria-labelledby="dorm-challenge-import-title">
+              <div class="dorm-challenge-block-head">
+                <div>
+                  <p class="card-eyebrow">加入室友</p>
+                  <h3 id="dorm-challenge-import-title">导入战报码</h3>
+                </div>
+              </div>
+              <label class="sr-only" for="dorm-challenge-import">粘贴室友战报码</label>
+              <textarea class="dorm-challenge-import" id="dorm-challenge-import" rows="4" placeholder="粘贴室友发来的战报码" spellcheck="false"></textarea>
+              <div class="dorm-challenge-actions">
+                <button class="data-action-button" id="dorm-challenge-import-button" type="button" data-data-action="import-dorm-report">导入战报</button>
+              </div>
+              <p class="data-feedback" id="dorm-challenge-import-feedback" role="status" aria-live="polite" hidden></p>
+            </section>
+
+            <section class="dorm-challenge-block" aria-labelledby="dorm-challenge-rank-title">
+              <div class="dorm-challenge-block-head">
+                <div>
+                  <p class="card-eyebrow">排名</p>
+                  <h3 id="dorm-challenge-rank-title">排行榜</h3>
+                </div>
+                <span class="card-tag" id="dorm-challenge-leaderboard-count">本机</span>
+              </div>
+              <ol class="dorm-challenge-leaderboard" id="dorm-challenge-leaderboard" aria-label="21 天宿舍挑战排行榜"></ol>
+              <div class="dorm-challenge-empty" id="dorm-challenge-leaderboard-empty">
+                <p>还没有导入室友战报。先把自己的战报码发出去，再把室友回传的战报码粘贴到上面。</p>
+                <button class="data-empty-action" type="button" data-data-action="focus-challenge-import">去粘贴室友战报</button>
+              </div>
+            </section>
+          </div>
+        </article>
+
+        <article class="dashboard-card data-card data-card-wide badge-card" aria-labelledby="data-badge-title">
+          <header class="card-heading data-card-heading">
+            <div>
+              <p class="card-eyebrow">成就</p>
+              <h2 id="data-badge-title">徽章墙</h2>
+            </div>
+            <span class="card-tag" id="data-badge-tag">0 / 5 点亮</span>
+          </header>
+          <p class="badge-note">满足条件会自动点亮，点亮后保留。点击徽章查看条件与当前进度。</p>
+          <div class="badge-grid" id="data-badge-grid"></div>
+          <div class="badge-detail" id="data-badge-detail" role="status" aria-live="polite">
+            <div class="badge-detail-head">
+              <strong id="data-badge-detail-name">徽章</strong>
+              <span class="badge-detail-state" id="data-badge-detail-state">进行中</span>
+            </div>
+            <p class="badge-detail-condition" id="data-badge-detail-condition"></p>
+            <div class="badge-detail-track" id="data-badge-detail-progressbar" role="progressbar" aria-label="徽章进度" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0">
+              <span id="data-badge-detail-bar"></span>
+            </div>
+            <small class="badge-detail-count" id="data-badge-detail-count"></small>
+          </div>
+          <div class="badge-hint" id="data-badge-hint" hidden>
+            <p>还没有点亮徽章。完成一次完整打卡，就能同时推进多枚徽章。</p>
+            <button class="data-empty-action" type="button" data-data-action="open-checkin">去记录中心打卡</button>
           </div>
         </article>
       </div>
     </section>
   </main>
+
+  <button class="record-fab" id="record-fab" type="button" aria-label="打开记录中心，记录饮食、运动和体重">+ 记录</button>
 
   <nav class="bottom-nav" aria-label="主要导航">
     <div class="nav-inner">
@@ -882,10 +1333,6 @@
       <button class="nav-item" type="button" data-page-target="plan" aria-controls="page-plan">
         <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>
         <span>计划</span>
-      </button>
-      <button class="nav-item" type="button" data-page-target="checkin" aria-controls="page-checkin">
-        <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-check"></use></svg>
-        <span>打卡</span>
       </button>
       <button class="nav-item" type="button" data-page-target="exercise" aria-controls="page-exercise">
         <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-dumbbell"></use></svg>
@@ -942,6 +1389,99 @@
       </form>
 
       <button class="secondary-button preset-done" id="preset-done" type="button">完成</button>
+    </div>
+  </dialog>
+
+  <dialog class="preset-dialog photo-meal-dialog" id="photo-meal-dialog" aria-labelledby="photo-meal-title" aria-describedby="photo-meal-note">
+    <div class="preset-dialog-panel photo-meal-panel">
+      <header class="preset-dialog-head">
+        <div>
+          <p class="preset-dialog-kicker">饮食记录</p>
+          <h2 id="photo-meal-title">拍照记餐</h2>
+        </div>
+        <button class="preset-dialog-close" id="photo-meal-close" type="button" aria-label="关闭拍照记餐">
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+
+      <p class="preset-dialog-note" id="photo-meal-note">照片默认只保存在本机，保留最近 7 天；点击 AI 识别时才会把当前压缩照片发送到识别服务。</p>
+
+      <section class="photo-meal-block" aria-labelledby="photo-meal-meal-label">
+        <p class="photo-meal-label" id="photo-meal-meal-label">记到哪一餐</p>
+        <div class="photo-meal-meal-options" role="group" aria-labelledby="photo-meal-meal-label">
+          <button class="photo-meal-meal-button" type="button" data-photo-meal="breakfast" aria-pressed="false">早餐</button>
+          <button class="photo-meal-meal-button" type="button" data-photo-meal="lunch" aria-pressed="false">午餐</button>
+          <button class="photo-meal-meal-button" type="button" data-photo-meal="dinner" aria-pressed="false">晚餐</button>
+        </div>
+      </section>
+
+      <section class="photo-meal-block" aria-labelledby="photo-meal-photo-label">
+        <div class="photo-meal-block-head">
+          <p class="photo-meal-label" id="photo-meal-photo-label">餐盘照片</p>
+          <span class="photo-meal-badge">本机保存</span>
+        </div>
+        <input id="photo-meal-file" class="photo-meal-file" type="file" accept="image/*" capture="environment">
+        <button class="photo-meal-picker" id="photo-meal-pick" type="button">
+          <span class="photo-meal-picker-icon" aria-hidden="true">
+            <svg class="icon"><use href="#icon-camera"></use></svg>
+          </span>
+          <span class="photo-meal-picker-copy">
+            <strong>拍照或选择照片</strong>
+            <span>会自动压缩到长边 720px 以内</span>
+          </span>
+        </button>
+        <div class="photo-meal-preview" id="photo-meal-preview" hidden>
+          <img id="photo-meal-preview-image" width="720" height="540" loading="lazy" decoding="async" alt="本次准备记录的餐盘照片">
+          <div class="photo-meal-preview-meta">
+            <span id="photo-meal-file-status">已压缩</span>
+            <button class="text-button" id="photo-meal-repick" type="button">换一张</button>
+          </div>
+        </div>
+        <div class="photo-meal-ai-row">
+          <button class="secondary-button photo-meal-ai-button" id="photo-meal-ai" type="button" disabled>AI 识别</button>
+          <span class="photo-meal-ai-hint">识别失败时，直接用下方菜品库手动选择。</span>
+        </div>
+        <p class="photo-meal-ai-status" id="photo-meal-ai-status" role="status" aria-live="polite" hidden></p>
+      </section>
+
+      <section class="photo-meal-block" aria-labelledby="photo-meal-dish-label">
+        <div class="photo-meal-block-head">
+          <p class="photo-meal-label" id="photo-meal-dish-label">菜品与份量</p>
+          <button class="text-button photo-meal-manual" id="photo-meal-manual" type="button">手动修正/搜索</button>
+        </div>
+        <div class="dish-search-shell photo-meal-search">
+          <svg class="dish-search-icon icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+          <label class="sr-only" for="photo-meal-search-input">搜索要记录的菜品</label>
+          <input id="photo-meal-search-input" type="search" maxlength="24" placeholder="搜索菜品，如：番茄炒蛋" autocomplete="off" spellcheck="false" aria-controls="photo-meal-dish-list">
+        </div>
+        <p class="photo-meal-search-status" id="photo-meal-search-status">从菜品库选择一道菜，再确认份量。</p>
+        <ul class="photo-meal-dish-list" id="photo-meal-dish-list" aria-label="菜品库搜索结果"></ul>
+        <p class="photo-meal-dish-empty" id="photo-meal-dish-empty" hidden>没有找到相关菜品，换个关键词试试。</p>
+      </section>
+
+      <section class="photo-meal-portion" id="photo-meal-portion" hidden aria-labelledby="photo-meal-portion-label">
+        <div class="photo-meal-portion-copy">
+          <p class="photo-meal-label" id="photo-meal-portion-label">确认份量</p>
+          <strong id="photo-meal-selected-dish">—</strong>
+          <span id="photo-meal-selected-meta">—</span>
+        </div>
+        <label class="photo-meal-portion-field">
+          <span>份量</span>
+          <select id="photo-meal-portion-select"></select>
+        </label>
+        <p class="photo-meal-calorie-preview">
+          <span>自动填入</span>
+          <strong id="photo-meal-calories">—</strong>
+          <small>kcal</small>
+        </p>
+      </section>
+
+      <p class="preset-feedback photo-meal-feedback" id="photo-meal-feedback" role="alert" aria-live="assertive" hidden></p>
+
+      <div class="photo-meal-actions">
+        <button class="secondary-button" id="photo-meal-cancel" type="button">取消</button>
+        <button class="primary-button" id="photo-meal-save" type="button" disabled>记入这一餐</button>
+      </div>
     </div>
   </dialog>
 
@@ -1005,6 +1545,109 @@
       </form>
 
       <button class="secondary-button preset-done" id="exercise-done" type="button">完成</button>
+    </div>
+  </dialog>
+
+  <dialog class="preset-dialog motion-timer-dialog" id="motion-timer-dialog" aria-labelledby="motion-timer-title" aria-describedby="motion-timer-desc">
+    <div class="preset-dialog-panel">
+      <header class="preset-dialog-head">
+        <div>
+          <p class="preset-dialog-kicker">校园微运动</p>
+          <h2 id="motion-timer-title">课间 5 分钟</h2>
+        </div>
+        <button class="preset-dialog-close" id="motion-timer-close" type="button" aria-label="关闭微运动计时器">
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+
+      <p class="preset-dialog-note" id="motion-timer-desc">跟着倒计时完成动作，可随时暂停或跳过当前动作。</p>
+
+      <div class="motion-timer-face">
+        <p class="motion-timer-step" id="motion-timer-step" aria-live="polite">准备开始</p>
+        <p class="motion-timer-tip" id="motion-timer-tip"></p>
+        <strong class="motion-timer-time" id="motion-timer-time" aria-hidden="true">00:00</strong>
+        <span class="motion-timer-round" id="motion-timer-round">1 / 5</span>
+      </div>
+
+      <div class="motion-timer-progress" aria-hidden="true">
+        <span id="motion-timer-progress"></span>
+      </div>
+
+      <ol class="motion-timer-sequence" id="motion-timer-sequence" aria-label="微运动动作序列"></ol>
+
+      <p class="motion-timer-feedback" id="motion-timer-feedback" role="status" aria-live="polite" hidden></p>
+
+      <div class="motion-timer-controls">
+        <button class="secondary-button" id="motion-timer-toggle" type="button">暂停</button>
+        <button class="secondary-button" id="motion-timer-skip" type="button">跳过</button>
+        <button class="primary-button motion-timer-complete" id="motion-timer-complete" type="button" disabled>完成</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="action-timer-dialog" id="action-timer-dialog" aria-labelledby="action-timer-title" aria-describedby="action-timer-desc">
+    <div class="action-timer-shell">
+      <header class="action-timer-head">
+        <div>
+          <p class="action-timer-kicker">校园 5 分钟</p>
+          <h2 id="action-timer-title">动作计时</h2>
+        </div>
+        <button class="action-timer-close" id="action-timer-close" type="button" aria-label="关闭动作计时器">
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+
+      <p class="action-timer-desc" id="action-timer-desc">跟随倒计时完成当前动作，可以暂停、切换到下一个动作，或提前完成并写入今天的运动记录。</p>
+
+      <div class="action-timer-stage">
+        <span class="action-timer-emoji" id="action-timer-emoji" aria-hidden="true">🏋️</span>
+        <p class="action-timer-category" id="action-timer-category">动作库</p>
+        <p class="action-timer-step" id="action-timer-step" aria-live="polite">准备开始</p>
+        <strong class="action-timer-clock" id="action-timer-clock" aria-hidden="true">05:00</strong>
+        <p class="action-timer-tags" id="action-timer-tags"></p>
+        <div class="action-timer-progress" aria-hidden="true">
+          <span id="action-timer-progress"></span>
+        </div>
+      </div>
+
+      <p class="action-timer-feedback" id="action-timer-feedback" role="status" aria-live="polite" hidden></p>
+
+      <div class="action-timer-controls">
+        <button class="primary-button action-timer-toggle" id="action-timer-toggle" type="button">开始</button>
+        <button class="secondary-button" id="action-timer-next" type="button">下一个</button>
+        <button class="secondary-button action-timer-complete" id="action-timer-complete" type="button" disabled>完成</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="preset-dialog swap-dialog" id="swap-dialog" aria-labelledby="swap-dialog-title" aria-describedby="swap-dialog-desc">
+    <div class="preset-dialog-panel">
+      <header class="preset-dialog-head">
+        <div>
+          <p class="preset-dialog-kicker">智能定制</p>
+          <h2 id="swap-dialog-title">替换动作</h2>
+        </div>
+        <button class="preset-dialog-close" id="swap-dialog-close" type="button" aria-label="关闭替换动作弹窗">
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+
+      <p class="preset-dialog-note" id="swap-dialog-desc">从动作库中换一个同类动作，替换后会立即保存到本周计划。</p>
+
+      <section class="swap-step" id="swap-slot-step" aria-labelledby="swap-slot-label">
+        <p class="swap-step-label" id="swap-slot-label">先选择要替换的动作</p>
+        <div class="swap-slot-list" id="swap-slot-list"></div>
+      </section>
+
+      <section class="swap-step" id="swap-option-step" aria-labelledby="swap-option-label" hidden>
+        <div class="swap-option-head">
+          <p class="swap-step-label" id="swap-option-label">选择新动作</p>
+          <button class="text-button swap-slot-back" id="swap-slot-back" type="button">重新选位置</button>
+        </div>
+        <div class="swap-options" id="swap-option-list"></div>
+      </section>
+
+      <p class="swap-feedback" id="swap-feedback" role="status" aria-live="polite" hidden></p>
     </div>
   </dialog>
 </body>

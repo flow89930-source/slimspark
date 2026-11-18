@@ -1,5 +1,24 @@
+# Qoder Sites local descriptor and generated runtime
 .轻燃计划 SlimSpark.qoder.site
+functions/_qoder/
+
+# Build output and dependencies
 dist/
+node_modules/
+
+# Local secrets and environment overrides
+.env
+.env.*
+*.local
+
+# Logs and test artifacts
+*.log
+coverage/
+test-results/
+
+# Editor and OS files
 .DS_Store
 Thumbs.db
-*.log
+.vscode/
+.idea/
+*.swp
